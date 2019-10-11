@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2019/10/09 14:31:29 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/11 15:23:51 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,48 +18,40 @@
 #include "md5.h"
 #include "option.h"
 
-char    *g_cmd[] = {
-    "md5",
-};
-
 void    get_cmd(t_env *env, char *str)
 {
-    int i ;
-    (void)env;
-    i = 0;
-    while (g_cmd[i])
+    if (ft_strequ(str, "md5"))
     {
-        if (ft_strequ(str, g_cmd[i]))
-        {
-            // assign digest_fn (md5, sha-256...)
-            return ;
-        }
-        i++;
+        env->cmd = md5;
+        return ;
     }
+    if (ft_strequ(str, "sha256"))
+    {
+        return;
+    }
+    // Exit with error message
     exit(0);
-}
-
-void    print_bit(char c, int len)
-{
-    char    result[len + 1];
-
-    result[len] = '\0';
-    for (int i = 0; i < len; i++) {
-        result[len - i - 1] = c & 1 ? '1' : '0';
-        c >>= 1;
-    }
-    printf("%s ", result);
 }
 
 int main(int ac, char **av)
 {
     t_env   env;
-    (void)ac;
-    (void)av;
+
+
     ft_bzero(&env, sizeof(t_env));
-    // get_cmd(&env, av[1]);
-    // option_manager(&env.option, ac, av);
-    md5(&env);
-    
+    if (ac > 1)
+    {
+        get_cmd(&env, av[1]);
+        if (ac > 2)
+        {
+            env.option.opt_count = ac - 2;
+            env.option.opt_list = &av[2];
+            get_options(&env);
+        }
+    }
+    else
+    {
+        exit(0);
+    }
     return 0;
 }

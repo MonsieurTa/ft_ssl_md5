@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2019/10/11 12:37:10 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/11 15:50:13 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ typedef struct	s_env
 	t_option	option;
 	uint8_t		*data;
 	uint64_t	data_len;
-	uint64_t	data_bitlen;
 	char		**filenames;
-	void		(*digest_fn)(t_option *opt, char *data);
+	char		*(*cmd)(uint8_t *data, uint64_t data_len);
+	char		*result;
 }				t_env;
 
 void    	print_bit(char c, int len);

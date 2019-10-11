@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:07:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/11 12:40:44 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/11 17:54:01 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,14 @@ void	md5_digest(t_md5 *env_md5, uint32_t *chunk)
 	assign_digest(env_md5, &md5_digest);
 }
 
-int		md5(t_env *env)
+char		*md5(uint8_t *data, uint64_t data_len)
 {
 	t_md5	env_md5;
 	size_t	i;
 
 	i = 0;
 	ft_bzero(&env_md5, sizeof(t_md5));
-	init_msg(&env_md5, env->data, env->data_len);
+	init_msg(&env_md5, data, data_len);
 	env_md5.a0 = 0x67452301;
 	env_md5.b0 = 0xefcdab89;
 	env_md5.c0 = 0x98badcfe;
@@ -111,5 +111,5 @@ int		md5(t_env *env)
 	}
 	md5_join_result(&env_md5);
 	md5_get_result(&env_md5);
-	return 0;
+	return ft_strdup(env_md5.result);
 }
