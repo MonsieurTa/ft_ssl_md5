@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:07:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/10 19:14:16 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/11 12:40:44 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@
 #include "ft_ssl.h"
 #include "md5.h"
 
-#include <stdio.h>
-
-uint32_t	g_contants[] = {
+uint32_t	g_constants[] = {
 	0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
 	0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
 	0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
@@ -51,120 +49,67 @@ void init_msg(t_md5 *env_md5, uint8_t *data, uint64_t data_len)
 	uint64_t	bit_len;
 	uint64_t	*len_anchor;
 
-	bit_len = data_len * 8 + 1; // 1 bit a end of message
-	// need to get to bit_len = 448 % 512
+	bit_len = data_len * 8 + 1;
 	msg_len = align_up(bit_len + 64, 512) / 8;
-	msg = (uint8_t*)malloc(msg_len * sizeof(uint8_t));
+	if ((msg = (uint8_t*)malloc(msg_len * sizeof(uint8_t))) == NULL)
+		exit(0);
 	ft_bzero(msg, msg_len);
 	msg = ft_memcpy(msg, data, data_len);
-	msg[data_len] |= 1 << 7; // append 1 to end of msg
+	msg[data_len] |= 1 << 7;
 	len_anchor = (uint64_t*)&msg[msg_len-8];
-	*len_anchor = data_len * 8; // setting the original data length on 64 bits
+	*len_anchor = data_len * 8;
 	env_md5->msg = msg;
 	env_md5->msg_len = msg_len;
 }
 
-void	init_md5_hash(t_md5 *md5, t_md5_hash *md5_hash)
+void	process_digest(t_md5_digest *md5_digest, uint32_t g, uint32_t (*bitwise_fn)(uint32_t, uint32_t, uint32_t))
 {
-	md5_hash->a = md5->a0;
-	md5_hash->b = md5->b0;
-	md5_hash->c = md5->c0;
-	md5_hash->d = md5->d0;
+	md5_digest->f = bitwise_fn(md5_digest->b, md5_digest->c, md5_digest->d);
+	md5_digest->g = g;
 }
 
-void	hash_data(t_md5 *env_md5, uint32_t *chunk)
+void	md5_digest(t_md5 *env_md5, uint32_t *chunk)
 {
-	t_md5_hash	md5_hash;
-	int			i;
+	t_md5_digest	md5_digest;
+	int				i;
 
 	i = 0;
-	ft_bzero(&md5_hash, sizeof(t_md5_hash));
-
-	init_md5_hash(env_md5, &md5_hash);
+	ft_bzero(&md5_digest, sizeof(t_md5_digest));
+	init_md5_hash(env_md5, &md5_digest);
 	while (i < 64)
 	{
 		if (i < 16)
-		{
-			md5_hash.f = bitwise_fn_f(md5_hash.b, md5_hash.c, md5_hash.d);
-			md5_hash.g = i;
-		}
+			process_digest(&md5_digest, i, bitwise_fn_f);
 		else if (i >= 16 && i < 32)
-		{
-			md5_hash.f = bitwise_fn_g(md5_hash.b, md5_hash.c, md5_hash.d);
-			md5_hash.g = (5 * i + 1) % 16;
-		}
+			process_digest(&md5_digest, (5 * i + 1) % 16, bitwise_fn_g);
 		else if (i >= 32 && i < 48)
-		{
-			md5_hash.f = bitwise_fn_h(md5_hash.b, md5_hash.c, md5_hash.d);
-			md5_hash.g = (3 * i + 5) % 16;
-		}
+			process_digest(&md5_digest, (3 * i + 5) % 16, bitwise_fn_h);
 		else if (i >= 48 && i < 64)
-		{
-			md5_hash.f = bitwise_fn_i(md5_hash.b, md5_hash.c, md5_hash.d);
-			md5_hash.g = (7 * i) % 16;
-		}
-		md5_hash.f = md5_hash.f + md5_hash.a + g_contants[i] + chunk[md5_hash.g];
-		md5_hash.a = md5_hash.d;
-		md5_hash.d = md5_hash.c;
-		md5_hash.c = md5_hash.b;
-		md5_hash.b = md5_hash.b + left_rotate(md5_hash.f, g_left_shifts[i]);
+			process_digest(&md5_digest, (7 * i) % 16, bitwise_fn_i);
+		assign_round_digest(&md5_digest, i, chunk);
 		i++;
 	}
-	env_md5->a0 += md5_hash.a;
-	env_md5->b0 += md5_hash.b;
-	env_md5->c0 += md5_hash.c;
-	env_md5->d0 += md5_hash.d;
-}
-
-void	digest_md5(t_md5 *env_md5)
-{
-	env_md5->digest[0] = env_md5->a0;
-	env_md5->digest[1] = env_md5->b0;
-	env_md5->digest[2] = env_md5->c0;
-	env_md5->digest[3] = env_md5->d0;
-}
-
-void	byte_to_hexa(char *dst, uint8_t byte)
-{
-	dst[0] = "0123456789abcdef"[byte >> 4];
-	dst[1] = "0123456789abcdef"[byte & 0xf];
-}
-
-void	digest_to_hexa(t_md5 *env_md5)
-{
-	char	result[32];
-	uint8_t	*ptr;
-
-	ptr = (uint8_t*)env_md5->digest;
-	for (int i = 0; i < 31; i += 2)
-	{
-		byte_to_hexa(&result[i], ptr[i / 2]);
-	}
-	write(1, result, 32);
-	write(1, "\n", 1);
+	assign_digest(env_md5, &md5_digest);
 }
 
 int		md5(t_env *env)
 {
 	t_md5	env_md5;
+	size_t	i;
 
+	i = 0;
 	ft_bzero(&env_md5, sizeof(t_md5));
+	init_msg(&env_md5, env->data, env->data_len);
 	env_md5.a0 = 0x67452301;
 	env_md5.b0 = 0xefcdab89;
 	env_md5.c0 = 0x98badcfe;
 	env_md5.d0 = 0x10325476;
-	// Test
-	env->data = (uint8_t*)"Hello";
-	env->data_len = (uint64_t)ft_strlen((char*)env->data);
-
-	init_msg(&env_md5, env->data, env->data_len);
-
-	for (size_t i = 0; i < env_md5.msg_len; i += 64)
+	while (i < env_md5.msg_len)
 	{
-		hash_data(&env_md5, (uint32_t*)&env_md5.msg[i]);
+		md5_digest(&env_md5, (uint32_t*)&env_md5.msg[i]);
+		i += 64;
 	}
-	printf("msg len: %llu\n", env_md5.msg_len);
-	digest_md5(&env_md5);
-	digest_to_hexa(&env_md5);
+	md5_join_result(&env_md5);
+	md5_get_result(&env_md5);
 	return 0;
 }
