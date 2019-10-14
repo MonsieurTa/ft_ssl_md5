@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:16:36 by wta               #+#    #+#             */
-/*   Updated: 2019/10/11 15:46:35 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/14 16:40:10 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ typedef struct      s_option
 
 }                   t_option;
 
-void    get_options(t_env *env);
+int    manage_options(t_env *env);
 
 #endif

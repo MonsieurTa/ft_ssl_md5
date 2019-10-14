@@ -6,12 +6,12 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/10/11 12:57:33 by wta              ###   ########.fr        #
+#    Updated: 2019/10/14 18:41:14 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ssl
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror
 CC = gcc
 
 INC_DIR = includes
@@ -26,10 +26,10 @@ option.h
 
 SRCS =				\
 main.c				\
-md5/bitwise_fn.c	\
 md5/md5.c			\
 md5/utils.c			\
 option.c			\
+read.c				\
 utils.c
 
 OBJ = $(SRCS:.c=.o)
