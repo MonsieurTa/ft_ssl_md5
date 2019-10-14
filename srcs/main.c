@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2019/10/14 19:10:50 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/14 19:39:36 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ void    get_cmd(t_env *env, char *str)
     // Exit with error message
     exit(0);
 }
-
-#include <stdlib.h>
 
 int main(int ac, char **av)
 {

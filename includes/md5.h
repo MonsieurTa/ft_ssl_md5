@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:54:27 by wta               #+#    #+#             */
-/*   Updated: 2019/10/14 19:02:31 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/14 19:32:33 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ typedef struct	s_md5_digest
 	uint32_t	d;
 }				t_md5_digest;
 
-extern uint32_t	g_left_shifts[];
+extern uint8_t	g_left_shifts[];
+extern uint8_t	g_left_shifts[];
 extern uint32_t	g_constants[];
 
 void			md5_init(t_digest_tool *tool, t_md5_digest *md5_hash);

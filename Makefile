@@ -6,13 +6,13 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/10/14 18:41:14 by wta              ###   ########.fr        #
+#    Updated: 2019/10/14 19:37:23 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ssl
 CFLAGS = -Wall -Wextra -Werror
-CC = gcc
+CC = gcc -O2
 
 INC_DIR = includes
 OBJ_DIR = objs
