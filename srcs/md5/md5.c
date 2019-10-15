@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:07:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/14 19:35:39 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/15 08:19:16 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ uint8_t		g_left_shifts[] = {
 	6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21,
 };
 
-uint8_t		g_md5_k[] = {
+uint8_t		g_md5_g[] = {
 	0, 1,  2, 3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15,
 	1, 6, 11, 0,  5, 10, 15,  4,  9, 14,  3,  8, 13,  2,  7, 12,
 	5, 8, 11, 14, 1,  4,  7, 10, 13,  0,  3,  6,  9, 12, 15,  2,
@@ -57,7 +57,7 @@ void	md5(t_env *env, uint32_t *chunk)
 	i = 0;
 	ft_bzero(&md5_digest, sizeof(t_md5_digest));
 	md5_init(&env->tool, &md5_digest);
-	while (i < 64)
+	while (i < CHUNK_SIZE)
 	{
 		if (i < 16)
 			md5_digest.f = MD5_FN_F(md5_digest.b, md5_digest.c, md5_digest.d);
@@ -65,9 +65,9 @@ void	md5(t_env *env, uint32_t *chunk)
 			md5_digest.f = MD5_FN_G(md5_digest.b, md5_digest.c, md5_digest.d);
 		else if (i >= 32 && i < 48)
 			md5_digest.f = MD5_FN_H(md5_digest.b, md5_digest.c, md5_digest.d);
-		else if (i >= 48 && i < 64)
+		else if (i >= 48 && i < CHUNK_SIZE)
 			md5_digest.f = MD5_FN_I(md5_digest.b, md5_digest.c, md5_digest.d);
-		md5_digest.f = md5_digest.f + md5_digest.a + g_constants[i] + chunk[g_md5_k[i]];
+		md5_digest.f = md5_digest.f + md5_digest.a + g_constants[i] + chunk[g_md5_g[i]];
 		md5_digest.a = md5_digest.d;
 		md5_digest.d = md5_digest.c;
 		md5_digest.c = md5_digest.b;
@@ -76,4 +76,3 @@ void	md5(t_env *env, uint32_t *chunk)
 	}
 	md5_sum_digest(&env->tool, &md5_digest);
 }
-

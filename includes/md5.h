@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:54:27 by wta               #+#    #+#             */
-/*   Updated: 2019/10/14 19:32:33 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/15 08:15:52 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,11 @@
 # include <stdint.h>
 # include <ft_ssl.h>
 
-#define MD5_FN_F(b,c,d) ((b & c) | (~b & d))
-#define MD5_FN_G(b,c,d) ((b & d) | (c & ~d))
-#define MD5_FN_H(b,c,d) (b ^ c ^ d)
-#define MD5_FN_I(b,c,d) (c ^ (b | ~d))
-#define MD5_LEFT_ROTATE(x,c) ((x << c) | (x >> (32 - c)))
-
-typedef struct	s_md5
-{
-	uint8_t		*msg;
-	uint64_t	msg_len;
-}				t_md5;
+#define MD5_FN_F(b,c,d)			((b & c) | (~b & d))
+#define MD5_FN_G(b,c,d)			((b & d) | (c & ~d))
+#define MD5_FN_H(b,c,d)			(b ^ c ^ d)
+#define MD5_FN_I(b,c,d)			(c ^ (b | ~d))
+#define MD5_LEFT_ROTATE(x,c)	((x << c) | (x >> (32 - c)))
 
 typedef struct	s_md5_digest
 {
@@ -38,7 +32,7 @@ typedef struct	s_md5_digest
 	uint32_t	d;
 }				t_md5_digest;
 
-extern uint8_t	g_left_shifts[];
+extern uint8_t	g_md5_g[];
 extern uint8_t	g_left_shifts[];
 extern uint32_t	g_constants[];
 

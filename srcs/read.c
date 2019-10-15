@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 10:22:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/14 19:11:44 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/15 08:19:16 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ size_t	process_digest_buffer(t_env *env, t_digest_buffer *d_buffer,
 
 	if (d_buffer->len == 0)
 		return 0;
-	to_fill = 64 - d_buffer->len;
+	to_fill = CHUNK_SIZE - d_buffer->len;
 	if (to_fill > size)
 		to_fill = size;
 	ft_memcpy(d_buffer->buffer, r_buffer, to_fill);
 	d_buffer->len += to_fill;
-	if (d_buffer->len == 64)
+	if (d_buffer->len == CHUNK_SIZE)
 	{
 		env->cmd(env, (uint32_t*)d_buffer->buffer);
 		d_buffer->len = 0;
@@ -47,7 +47,7 @@ void	end_digest(t_env *env)
 	uint64_t	*ptr;
 
 	env->d_buffer.buffer[env->d_buffer.len] = 1 << 7;
-	if (64 - env->d_buffer.len <= 8)
+	if (CHUNK_SIZE - env->d_buffer.len <= 8)
 	{
 		env->cmd(env, (uint32_t*)env->d_buffer.buffer);
 		env->d_buffer.len = 0;
@@ -74,11 +74,11 @@ void	ft_ssl_read(t_env *env, int fd)
 		i = process_digest_buffer(env, &env->d_buffer, (uint8_t*)read_buffer, read_res);
 		while (i < read_res)
 		{
-			if (read_res - i < 64)
+			if (read_res - i < CHUNK_SIZE)
 				fill_digest_buffer(&env->d_buffer, &read_buffer[i], read_res - i);
 			else
 				env->cmd(env, (uint32_t*)&read_buffer[i]);
-			i += 64;
+			i += CHUNK_SIZE;
 		}
 	}
 	end_digest(env);

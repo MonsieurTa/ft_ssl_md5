@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2019/10/14 18:43:59 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/15 08:19:31 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 #include <stdint.h>
 #include "option.h"
 
-#define READ_BUFFER_LEN 4096
+#define READ_BUFFER_LEN	4096
+#define CHUNK_SIZE		64
 
 typedef struct	s_digest_tool
 {
@@ -28,7 +29,7 @@ typedef struct	s_digest_tool
 
 typedef struct	s_digest_buffer
 {
-	uint8_t		buffer[64 + 1];
+	uint8_t		buffer[CHUNK_SIZE + 1];
 	uint32_t	len;
 }				t_digest_buffer;
 
