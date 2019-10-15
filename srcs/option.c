@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:13:52 by wta               #+#    #+#             */
-/*   Updated: 2019/10/14 17:17:00 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/15 18:00:38 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,39 +17,54 @@
 #include "option.h"
 #include "md5.h"
 
-char    g_options[] = "pqrs";
+static char g_opts[] = "pqrs";
 
-int     parse_option(t_env *env, int index)
+int            apply_opt(t_env *env, char *c, char *opts)
+{
+    if (ft_strchr(g_opts, *c))
+    {
+        if (c == 'r' && !(*opts & OPT_PRINT)) {
+            *opts |= OPT_REVERSE;
+        }
+        else if (c == 'q') {
+            *opts = (*opts | OPT_QUIET) ^ (OPT_REVERSE);
+        }
+        else if (c == 'p') {
+            *opts |= OPT_PRINT;
+            ft_ssl_read(env, STDIN_FILENO);
+        }
+        else if (c == 's') {
+            *opts |= OPT_STRING;
+            return 0;
+        }
+        return 1;
+    }
+    return -1;
+}
+
+int             parse_option(t_env *env, int index)
 {
     t_option    *opt;
-    char        c;
+    char        *c;
+    int         ret;
     int         i;
 
     i = 0;
     opt = &env->option;
     if (opt->opt_list[index][i++] != '-')
         return 0;
-    while ((c = opt->opt_list[index][i]) != '\0')
+    ret = 1;
+    while ((c = &opt->opt_list[index][i]) != '\0' && ret)
     {
-        if (c == 'q')
-            opt->quiet |= 0x1;
-        else if (c == 'r')
-            opt->reverse |= 0x1;
-        else if (c == 'p')
-        {
-            ft_ssl_read(env, STDIN_FILENO);
-            md5_join_result(&env->tool, env);
-            md5_get_result(env);
-            ft_printf("%s\n", env->result);
-        }
-        else if (c == 's') {}
+        env->option.curr_opt = c;
+        if ((ret = apply_opt(env, c, &opt->opts)) == -1)
+            new_error(env, ERR_ILLEGAL_OPT);
         i++;
-        // else illegal option
     }
     return 1;
 }
 
-int    manage_options(t_env *env)
+int             manage_options(t_env *env)
 {
     int i;
 

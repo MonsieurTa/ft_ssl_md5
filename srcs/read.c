@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 10:22:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/15 08:19:16 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/15 14:53:24 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 #include "ft_printf.h"
 
-size_t	process_digest_buffer(t_env *env, t_digest_buffer *d_buffer,
+size_t	process_buffer(t_env *env, t_digest_buffer *d_buffer,
 								uint8_t *r_buffer, size_t size)
 {
 	size_t	to_fill;
@@ -36,7 +36,7 @@ size_t	process_digest_buffer(t_env *env, t_digest_buffer *d_buffer,
 	return to_fill;
 }
 
-void	fill_digest_buffer(t_digest_buffer *d_buffer, char *r_buffer, size_t size)
+void	fill_buffer(t_digest_buffer *d_buffer, uint8_t *r_buffer, size_t size)
 {
 	ft_memcpy(d_buffer->buffer, (void*)r_buffer, size);
 	d_buffer->len = size;
@@ -59,27 +59,29 @@ void	end_digest(t_env *env)
 
 void	ft_ssl_read(t_env *env, int fd)
 {
-	char	read_buffer[READ_BUFFER_LEN + 1];
-	size_t	read_res;
+	size_t	ret;
 	size_t	i;
 
-	env->init_cmd(&env->tool);
+	env->init_cmd(env);
 	env->data_len = 0;
 	ft_bzero(&env->d_buffer, sizeof(t_digest_buffer));
-	ft_bzero(read_buffer, READ_BUFFER_LEN + 1);
-	while ((read_res = read(fd, read_buffer, READ_BUFFER_LEN)) > 0)
+	while ((ret = read(fd, env->d_buffer.r_buffer, READ_BUFFER_LEN)) > 0)
 	{
-		env->data_len += read_res;
-		read_buffer[read_res] = '\0';
-		i = process_digest_buffer(env, &env->d_buffer, (uint8_t*)read_buffer, read_res);
-		while (i < read_res)
+		if (env->option.opts & OPT_PRINT) {}
+			// do smt
+		env->data_len += ret;
+		env->d_buffer.r_buffer[ret] = '\0';
+		i = process_buffer(env, &env->d_buffer, env->d_buffer.r_buffer, ret);
+		while (i < ret)
 		{
-			if (read_res - i < CHUNK_SIZE)
-				fill_digest_buffer(&env->d_buffer, &read_buffer[i], read_res - i);
+			if (ret - i < CHUNK_SIZE)
+				fill_buffer(&env->d_buffer, &env->d_buffer.r_buffer[i],
+				ret - i);
 			else
-				env->cmd(env, (uint32_t*)&read_buffer[i]);
+				env->cmd(env, (uint32_t*)&env->d_buffer.r_buffer[i]);
 			i += CHUNK_SIZE;
 		}
 	}
 	end_digest(env);
+	ft_ssl_get_result(env);
 }

@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2019/10/14 19:39:36 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/15 14:48:12 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,20 @@
 #include "md5.h"
 #include "option.h"
 
-void    init_md5_tool(t_digest_tool *tool)
-{
-    tool->a0 = 0x67452301;
-	tool->b0 = 0xefcdab89;
-	tool->c0 = 0x98badcfe;
-	tool->d0 = 0x10325476;
-}
-
 void    get_cmd(t_env *env, char *str)
 {
+    ft_memcpy(env->cmd_name, str, MIN(MAX_CMD_SIZE, ft_strlen(str)));
     if (ft_strequ(str, "md5"))
     {
         env->cmd = md5;
-        env->init_cmd = init_md5_tool;
+        env->init_cmd = md5_init;
         return ;
     }
     else if (ft_strequ(str, "sha256"))
     {
         return;
     }
-    // Exit with error message
-    exit(0);
+    new_error(env, ERR_BAD_CMD);
 }
 
 int main(int ac, char **av)
@@ -61,6 +53,6 @@ int main(int ac, char **av)
         }
     }
     else
-        exit(0);
+        new_error(&env, ERR_USAGE);
     return 0;
 }

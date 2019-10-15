@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:12:20 by wta               #+#    #+#             */
-/*   Updated: 2019/10/14 18:55:40 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/15 18:00:43 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ void		digest_file(t_env *env, char *filepath)
 {
 	int	fd;
 
+	env->curr_filepath = filepath;
 	if ((fd = open(filepath, O_RDONLY)) == -1)
-		exit(0);
+		new_error(env, ERR_MISSING);
+	if (read(fd, NULL, 0) < 0)
+		new_error(env, ERR_INVALID_FILE);
 	ft_ssl_read(env, fd);
-	md5_join_result(&env->tool, env);
-	md5_get_result(env);
-	ft_printf("%s\n", env->result);
 	close(fd);
 }
 
@@ -70,6 +70,10 @@ void		digest_files(t_env *env, char **filepaths, int index_max)
 	int	i;
 
 	i = 0;
+	if (env->option.opts & OPT_STRING)
+	{
+		
+	}
 	while (i < index_max)
 	{
 		digest_file(env, filepaths[i]);

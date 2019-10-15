@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:54:27 by wta               #+#    #+#             */
-/*   Updated: 2019/10/15 08:15:52 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/15 13:43:09 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,15 @@
 #define MD5_FN_I(b,c,d)			(c ^ (b | ~d))
 #define MD5_LEFT_ROTATE(x,c)	((x << c) | (x >> (32 - c)))
 
-typedef struct	s_md5_digest
-{
-	uint32_t	f;
-	uint32_t	g;
-	uint32_t	a;
-	uint32_t	b;
-	uint32_t	c;
-	uint32_t	d;
-}				t_md5_digest;
+#define MD5_OUTPUT_SIZE 32
+#define MD5_RESULT_SIZE 4
 
 extern uint8_t	g_md5_g[];
 extern uint8_t	g_left_shifts[];
 extern uint32_t	g_constants[];
 
-void			md5_init(t_digest_tool *tool, t_md5_digest *md5_hash);
-void			md5_join_result(t_digest_tool *tool, t_env *env);
-void			md5_get_result(t_env *env);
-void			assign_round_digest(t_md5_digest *md5_digest, int i, uint32_t *chunk);
-void			md5_sum_digest(t_digest_tool *tool, t_md5_digest *md5_digest);
-
+void			ft_ssl_get_result(t_env *env);
+void  			md5_init(t_env *env);
 void			md5(t_env *env, uint32_t *chunk);
 
 #endif

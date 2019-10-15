@@ -6,12 +6,12 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/10/14 19:37:23 by wta              ###   ########.fr        #
+#    Updated: 2019/10/15 12:01:21 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ssl
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 CC = gcc -O2
 
 INC_DIR = includes
@@ -25,6 +25,7 @@ md5.h			\
 option.h
 
 SRCS =				\
+error.c				\
 main.c				\
 md5/md5.c			\
 md5/utils.c			\

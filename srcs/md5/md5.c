@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:07:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/15 08:19:16 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/15 09:48:09 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,28 +51,31 @@ uint8_t		g_md5_g[] = {
 
 void	md5(t_env *env, uint32_t *chunk)
 {
-	t_md5_digest	md5_digest;
+	uint32_t		digest[4];
+	uint32_t		f;
 	int				i;
 
 	i = 0;
-	ft_bzero(&md5_digest, sizeof(t_md5_digest));
-	md5_init(&env->tool, &md5_digest);
+	ft_memcpy(digest, env->result, sizeof(uint32_t) * 4);
 	while (i < CHUNK_SIZE)
 	{
 		if (i < 16)
-			md5_digest.f = MD5_FN_F(md5_digest.b, md5_digest.c, md5_digest.d);
+			f = MD5_FN_F(digest[1], digest[2], digest[3]);
 		else if (i >= 16 && i < 32)
-			md5_digest.f = MD5_FN_G(md5_digest.b, md5_digest.c, md5_digest.d);
+			f = MD5_FN_G(digest[1], digest[2], digest[3]);
 		else if (i >= 32 && i < 48)
-			md5_digest.f = MD5_FN_H(md5_digest.b, md5_digest.c, md5_digest.d);
+			f = MD5_FN_H(digest[1], digest[2], digest[3]);
 		else if (i >= 48 && i < CHUNK_SIZE)
-			md5_digest.f = MD5_FN_I(md5_digest.b, md5_digest.c, md5_digest.d);
-		md5_digest.f = md5_digest.f + md5_digest.a + g_constants[i] + chunk[g_md5_g[i]];
-		md5_digest.a = md5_digest.d;
-		md5_digest.d = md5_digest.c;
-		md5_digest.c = md5_digest.b;
-		md5_digest.b = md5_digest.b + MD5_LEFT_ROTATE(md5_digest.f, g_left_shifts[i]);
+			f = MD5_FN_I(digest[1], digest[2], digest[3]);
+		f += digest[0] + g_constants[i] + chunk[g_md5_g[i]];
+		digest[0] = digest[3];
+		digest[3] = digest[2];
+		digest[2] = digest[1];
+		digest[1] = digest[1] + MD5_LEFT_ROTATE(f, g_left_shifts[i]);
 		i++;
 	}
-	md5_sum_digest(&env->tool, &md5_digest);
+	env->result[0] += digest[0];
+	env->result[1] += digest[1];
+	env->result[2] += digest[2];
+	env->result[3] += digest[3];
 }
