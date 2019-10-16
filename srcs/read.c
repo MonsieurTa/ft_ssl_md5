@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 10:22:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/16 17:19:05 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/16 17:29:44 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_ssl_read(t_env *env, int fd)
 	{
 		env->data_len += ret;
 		env->d_buffer.r_buffer[ret] = '\0';
-		if (option_has(env->option, OPT_PRINT))
+		if (option_has(&env->option, OPT_PRINT))
 			track_input(env, env->d_buffer.r_buffer);
 		i = process_buffer(env, &env->d_buffer, env->d_buffer.r_buffer, ret);
 		process_round(env, i, ret, env->d_buffer.r_buffer);

@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:13:52 by wta               #+#    #+#             */
-/*   Updated: 2019/10/16 14:03:25 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/16 17:37:14 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ static int  parse_option(t_env *env, int index)
         opt->curr_opt = c;
         if ((ret = apply_option(env, c, &opt->opts)) == -1)
             throw_error(env, ERR_ILLEGAL_OPT);
-        if (option_has(*opt, OPT_STRING))
+        if (option_has(opt, OPT_STRING))
             return digest_string(env, &opt->opt_list[index][i + 1], index + 1);
         i++;
     }
     return 1;
 }
-
+// if used string is an argument, skip it to process the rest
 int         manage_options(t_env *env)
 {
     int i;
@@ -72,13 +72,13 @@ int         manage_options(t_env *env)
     while (i < env->option.opt_count && parse_option(env, i))
         i++;
     if (i < env->option.opt_count)
-        return 2 + i + option_has(env->option, OPT_STRING);
+        return 2 + i + option_has(&env->option, OPT_STRING);
     return -1;
 }
 
-int         option_has(t_option option, int opt)
+int         option_has(t_option *option, int opt)
 {
-    if (option.opts & opt)
+    if (option->opts & opt)
         return 1;
     return 0;
 }
