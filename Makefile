@@ -6,12 +6,12 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/10/15 12:01:21 by wta              ###   ########.fr        #
+#    Updated: 2019/10/16 15:18:34 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ssl
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 CC = gcc -O2
 
 INC_DIR = includes
@@ -25,13 +25,18 @@ md5.h			\
 option.h
 
 SRCS =				\
-error.c				\
-main.c				\
 md5/md5.c			\
 md5/utils.c			\
+utils/bytes.c		\
+utils/digest.c		\
+utils/io.c			\
+utils/math.c		\
+utils/tracker.c		\
+error.c				\
+format.c			\
+main.c				\
 option.c			\
-read.c				\
-utils.c
+read.c
 
 OBJ = $(SRCS:.c=.o)
 
@@ -44,6 +49,7 @@ $(NAME): $(addprefix $(OBJ_DIR)/, $(OBJ))
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(OBJ_DIR)/md5
+	mkdir -p $(OBJ_DIR)/utils
 
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c $(addprefix $(INC_DIR)/, $(HEADERS)) | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -I $(INC_DIR) -I $(addprefix $(LIBFT)/, $(INC_DIR)) -c -o $@ $<
