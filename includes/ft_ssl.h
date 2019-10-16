@@ -55,11 +55,20 @@ typedef struct	s_env
 }				t_env;
 
 void		ft_ssl_read(t_env *env, int fd);
+void		ft_ssl_string(t_env *env, char *str);
 void		digest_files(t_env *env, char **filepaths, int index_max);
+int			digest_string(t_env *env, char *residual_opt, int index);
+void		end_digest(t_env *env);
+int			track_input(t_env *env, uint8_t *input_buffer);
+void		process_round(t_env *env, size_t start, size_t end, uint8_t *data);
+void		fill_buffer(t_digest_buffer *d_buffer, uint8_t *r_buffer, size_t size);
+
+void		format_output(t_env *env);
 
 void    	print_bit(char c, int len);
 uint64_t	align_up(int n, uint64_t mod);
 void		byte_to_hexa(char *dst, uint8_t byte);
+void		print_to_upper(char *str);
 
 int			throw_error(t_env *env, int err_code);
 

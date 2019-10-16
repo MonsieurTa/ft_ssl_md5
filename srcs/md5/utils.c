@@ -6,10 +6,11 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 12:26:55 by wta               #+#    #+#             */
-/*   Updated: 2019/10/15 13:43:11 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/16 15:16:52 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_printf.h"
 #include "ft_ssl.h"
 #include "md5.h"
 
@@ -25,6 +26,7 @@ void	ft_ssl_get_result(t_env *env)
 		byte_to_hexa(&env->output[i], ptr[i / 2]);
 		i += 2;
 	}
+	format_output(env);
 }
 
 void    md5_init(t_env *env)
@@ -34,5 +36,4 @@ void    md5_init(t_env *env)
 	env->result[2] = 0x98badcfe;
 	env->result[3] = 0x10325476;
 	env->output_size = MD5_OUTPUT_SIZE;
-	env->result_size = MD5_RESULT_SIZE;
 }
