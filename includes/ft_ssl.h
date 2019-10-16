@@ -29,6 +29,8 @@
 # define ERR_ILLEGAL_OPT	0x8
 # define ERR_MISSING		0x10
 # define ERR_INVALID_FILE	0x20
+# define ERR_PANIC			0x40
+# define ERR_OPT_REQ_ARG	0x80
 
 typedef struct	s_digest_buffer
 {
@@ -59,7 +61,7 @@ void    	print_bit(char c, int len);
 uint64_t	align_up(int n, uint64_t mod);
 void		byte_to_hexa(char *dst, uint8_t byte);
 
-void		new_error(t_env *env, int err_code);
+int			throw_error(t_env *env, int err_code);
 
 
 #endif

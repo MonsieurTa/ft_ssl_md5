@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 11:59:52 by wta               #+#    #+#             */
-/*   Updated: 2019/10/15 14:41:38 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/16 15:37:15 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,53 +17,49 @@
 
 static char	*g_usage = "usage: ./ft_ssl [md5 | sha256] [-prq] [-s string] [files ...]\n";
 
-void	error_bad_cmd(t_env *env)
+static void	error_bad_cmd(t_env *env)
 {
 	write(STDERR_FILENO, "ft_ssl:Error: '", 15);
 	write(STDERR_FILENO, env->cmd_name, ft_strlen(env->cmd_name));
-	write(STDERR_FILENO, "' is an invalid command.\n\n", 24);
-	write(STDERR_FILENO, "Message digest commands\nmd5\nsha256\n\n", 40);
+	write(STDERR_FILENO, "' is an invalid command.\n\n", 26);
+	write(STDERR_FILENO, "Message digest commands:\nmd5\nsha256\n\n", 37);
 }
 
-void	error_illegal_opt(t_env *env)
+static void	error_illegal_opt(t_env *env, char *msg)
 {
 	write(STDERR_FILENO, "ft_ssl: ", 8);
 	write(STDERR_FILENO, env->cmd_name, ft_strlen(env->cmd_name));
-	write(STDERR_FILENO, ": illegal option -- ", 20);
+	write(STDERR_FILENO, msg, ft_strlen(msg));
 	write(STDERR_FILENO, &env->option.curr_opt, 1);
 	write(STDERR_FILENO, "\n", 1);
 	write(STDERR_FILENO, g_usage, ft_strlen(g_usage));
+	ft_memdel((void**)&env->input);
+	exit(0);
 }
 
-void	error_missing(t_env *env)
+static void	error_invalid_file(t_env *env, char *msg)
 {
 	write(STDERR_FILENO, "ft_ssl: ", 8);
 	write(STDERR_FILENO, env->cmd_name, ft_strlen(env->cmd_name));
 	write(STDERR_FILENO, ": ", 2);
-	write(STDERR_FILENO, env->curr_filepath, ft_strlen(env->curr_filepath));
-	write(STDERR_FILENO, ": No such file or directory", 27);
+	write(STDERR_FILENO, env->input_src, ft_strlen(env->input_src));
+	write(STDERR_FILENO, msg, ft_strlen(msg));
+	ft_memdel((void**)&env->input);
 }
 
-void	error_invalid_file(t_env *env)
-{
-	write(STDERR_FILENO, "ft_ssl: ", 8);
-	write(STDERR_FILENO, env->cmd_name, ft_strlen(env->cmd_name));
-	write(STDERR_FILENO, ": ", 2);
-	write(STDERR_FILENO, env->curr_filepath, ft_strlen(env->curr_filepath));
-	write(STDERR_FILENO, ": Invalid file", 27);
-}
-
-void	new_error(t_env *env, int err_code)
+int			throw_error(t_env *env, int err_code)
 {
 	if (err_code == ERR_BAD_CMD)
 		error_bad_cmd(env);
 	else if (err_code == ERR_USAGE)
 		write(STDERR_FILENO, g_usage, ft_strlen(g_usage));
 	else if (err_code == ERR_ILLEGAL_OPT)
-		error_illegal_opt(env);
+		error_illegal_opt(env, ": illegal option -- ");
+	else if (err_code == ERR_OPT_REQ_ARG)
+		error_illegal_opt(env, ": option requires an argument -- ");
 	else if (err_code == ERR_MISSING)
-		error_missing(env);
+		error_invalid_file(env, ": No such file or directory\n");
 	else if (err_code == ERR_INVALID_FILE)
-		error_invalid_file(env);
-	exit(0);
+		error_invalid_file(env, ": Invalid file\n");
+	return 0;
 }

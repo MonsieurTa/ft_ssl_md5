@@ -31,7 +31,7 @@ void    get_cmd(t_env *env, char *str)
     {
         return;
     }
-    new_error(env, ERR_BAD_CMD);
+    return throw_error(env, ERR_BAD_CMD);
 }
 
 int main(int ac, char **av)
@@ -53,6 +53,5 @@ int main(int ac, char **av)
         }
     }
     else
-        new_error(&env, ERR_USAGE);
-    return 0;
+        return throw_error(&env, ERR_USAGE);
 }
