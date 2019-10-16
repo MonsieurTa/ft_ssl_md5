@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:16:36 by wta               #+#    #+#             */
-/*   Updated: 2019/10/15 16:47:26 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/16 12:09:25 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define OPT_REVERSE    0x2
 # define OPT_PRINT      0x4
 # define OPT_STRING     0x8
+# define OPT_ISFILE     0x10
 
 typedef struct s_env t_env;
 
@@ -28,6 +29,8 @@ typedef struct      s_option
     char    curr_opt;
 }                   t_option;
 
-int    manage_options(t_env *env);
+int     manage_options(t_env *env);
+int     option_has(t_option option, int opt);
+
 
 #endif
