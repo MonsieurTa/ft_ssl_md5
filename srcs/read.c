@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 10:22:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/16 17:29:44 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/17 17:18:36 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,19 @@ void	ft_ssl_string(t_env *env, char *str)
 	process_round(env, i, env->data_len, (uint8_t*)str);
 	end_digest(env);
 	ft_ssl_get_result(env);
+}
+
+void	ft_ssl_get_result(t_env *env)
+{
+	uint8_t	*ptr;
+	int		i;
+
+	i = 0;
+	ptr = (uint8_t*)env->result;
+	while (i < env->output_size - 1)
+	{
+		byte_to_hexa(&env->output[i], ptr[i / 2]);
+		i += 2;
+	}
+	format_output(env);
 }

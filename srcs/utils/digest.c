@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:12:20 by wta               #+#    #+#             */
-/*   Updated: 2019/10/16 17:16:48 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/17 18:02:16 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int		digest_string(t_env *env, char *residual_opt, int index)
 	{
 		env->input_src = residual_opt;
 		ft_ssl_string(env, residual_opt);
+		env->option.residual_opt = 1;
 	}
 	else
 	{
@@ -65,6 +66,7 @@ int		digest_string(t_env *env, char *residual_opt, int index)
 
 void	end_digest(t_env *env)
 {
+	uint64_t	bitlen;
 	uint64_t	*ptr;
 
 	env->d_buffer.buffer[env->d_buffer.len] = 1 << 7;
@@ -74,7 +76,10 @@ void	end_digest(t_env *env)
 		ft_bzero(&env->d_buffer, sizeof(t_digest_buffer));
 	}
 	ptr = (uint64_t*)&env->d_buffer.buffer[56];
-	*ptr = env->data_len * 8;
+	bitlen = env->data_len * 8;
+	if (ft_strequ(env->cmd_name, "sha256"))
+		bitlen = byte_swap64(bitlen);
+	*ptr = bitlen;
 	env->cmd(env, (uint32_t*)env->d_buffer.buffer);
 }
 

@@ -6,7 +6,7 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/10/16 15:18:34 by wta              ###   ########.fr        #
+#    Updated: 2019/10/17 17:08:29 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,12 @@ LIBFT = libft
 HEADERS =		\
 ft_ssl.h		\
 md5.h			\
-option.h
+option.h		\
+sha256.h
 
 SRCS =				\
 md5/md5.c			\
-md5/utils.c			\
+sha256/sha256.c		\
 utils/bytes.c		\
 utils/digest.c		\
 utils/io.c			\
@@ -49,6 +50,7 @@ $(NAME): $(addprefix $(OBJ_DIR)/, $(OBJ))
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(OBJ_DIR)/md5
+	mkdir -p $(OBJ_DIR)/sha256
 	mkdir -p $(OBJ_DIR)/utils
 
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c $(addprefix $(INC_DIR)/, $(HEADERS)) | $(OBJ_DIR)

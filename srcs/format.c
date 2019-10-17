@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 15:15:47 by wta               #+#    #+#             */
-/*   Updated: 2019/10/16 17:32:20 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/17 17:15:28 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	print_output(t_env *env)
 	ft_putstr(option_has(&env->option, OPT_STRING) ? "\") = " : ") = ");
 	ft_putendl(env->output);
 }
-#include <stdio.h>
+
 void	format_output(t_env *env)
 {
 	t_option *opt;
@@ -50,7 +50,6 @@ void	format_output(t_env *env)
 			print_reverse_output(env);
 		else
 			print_output(env);
-		opt->opts ^= OPT_STRING;
 	}
 	else
 		ft_putendl(env->output);	

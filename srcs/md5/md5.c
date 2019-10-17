@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:07:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/15 09:48:09 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/17 16:04:39 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,15 @@ uint8_t		g_md5_g[] = {
 	0, 7, 14, 5, 12,  3, 10,  1,  8, 15,  6, 13,  4, 11,  2,  9
 };
 
+void    md5_init(t_env *env)
+{
+    env->result[0] = 0x67452301;
+	env->result[1] = 0xefcdab89;
+	env->result[2] = 0x98badcfe;
+	env->result[3] = 0x10325476;
+	env->output_size = MD5_OUTPUT_SIZE;
+}
+
 void	md5(t_env *env, uint32_t *chunk)
 {
 	uint32_t		digest[4];
@@ -71,7 +80,7 @@ void	md5(t_env *env, uint32_t *chunk)
 		digest[0] = digest[3];
 		digest[3] = digest[2];
 		digest[2] = digest[1];
-		digest[1] = digest[1] + MD5_LEFT_ROTATE(f, g_left_shifts[i]);
+		digest[1] = digest[1] + LEFT_ROTATE(f, g_left_shifts[i]);
 		i++;
 	}
 	env->result[0] += digest[0];

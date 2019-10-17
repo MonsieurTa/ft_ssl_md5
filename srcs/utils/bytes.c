@@ -6,28 +6,24 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 11:00:43 by wta               #+#    #+#             */
-/*   Updated: 2019/10/16 11:01:40 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/17 18:11:41 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 
-void		swap_byte(void *ptr, uint32_t size)
+uint32_t	byte_swap32(uint32_t x)
 {
-	uint32_t	low;
-	uint8_t		tmp;
-	uint8_t		*cptr;
+	return (((x >> 24) & 0xff) | (((x >> 16) & 0xff) << 8)
+	| (((x >> 8) & 0xff) << 16) | ((x & 0xff) << 24));
+}
 
-	cptr = ptr;
-	low = 0;
-	while (low < size)
-	{
-		size--;
-		tmp = cptr[size];
-		cptr[size] = cptr[low];
-		cptr[low] = tmp;
-		low++;
-	}
+uint64_t	byte_swap64(uint64_t x)
+{
+  return ((x & 0x00000000000000FFUL) << 56 | (x & 0x000000000000FF00UL) << 40
+  | (x & 0x0000000000FF0000UL) << 24 | (x & 0x00000000FF000000UL) << 8
+  | (x & 0x000000FF00000000UL) >> 8 | (x & 0x0000FF0000000000UL) >> 24
+  | (x & 0x00FF000000000000UL) >> 40 | (x & 0xFF00000000000000UL) >> 56);
 }
 
 void		byte_to_hexa(char *dst, uint8_t byte)

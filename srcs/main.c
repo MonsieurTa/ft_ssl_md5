@@ -6,13 +6,14 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2019/10/16 16:38:28 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/17 17:17:51 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_ssl.h"
 #include "md5.h"
+#include "sha256.h"
 #include "option.h"
 
 int    get_cmd(t_env *env, char *str)
@@ -26,6 +27,8 @@ int    get_cmd(t_env *env, char *str)
     }
     else if (ft_strequ(str, "sha256"))
     {
+		env->cmd = sha256;
+		env->init_cmd = sha256_init;
         return 1;
     }
     return throw_error(env, ERR_BAD_CMD);
@@ -46,6 +49,7 @@ int main(int ac, char **av)
                 env.option.opt_count = ac - 2;
                 env.option.opt_list = &av[2];
                 files_index = manage_options(&env);
+                env.option.opts ^= (env.option.opts & OPT_STRING);
                 if (files_index != -1)
                     digest_files(&env, &av[files_index], ac - files_index);
             }

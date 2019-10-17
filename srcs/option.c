@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:13:52 by wta               #+#    #+#             */
-/*   Updated: 2019/10/16 17:37:14 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/17 14:51:35 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "libft.h"
 #include "option.h"
 #include "md5.h"
+
+#include <stdio.h>
 
 static char g_opts[] = "pqrs";
 
@@ -63,7 +65,7 @@ static int  parse_option(t_env *env, int index)
     }
     return 1;
 }
-// if used string is an argument, skip it to process the rest
+
 int         manage_options(t_env *env)
 {
     int i;
@@ -79,6 +81,10 @@ int         manage_options(t_env *env)
 int         option_has(t_option *option, int opt)
 {
     if (option->opts & opt)
+	{
+		if (option->opts == OPT_STRING && option->residual_opt)
+			return 0;
         return 1;
+	}
     return 0;
 }
