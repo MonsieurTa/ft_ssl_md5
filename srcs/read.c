@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 10:22:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/17 17:18:36 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/18 12:11:18 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ size_t	process_buffer(t_env *env, t_digest_buffer *d_buffer,
 	d_buffer->len += to_fill;
 	if (d_buffer->len == CHUNK_SIZE)
 	{
+		if (env->big_endian)
+			byte_swap32_buffer((uint32_t*)d_buffer->buffer, 16);
 		env->cmd(env, (uint32_t*)d_buffer->buffer);
 		ft_bzero(d_buffer, sizeof(t_digest_buffer));
 	}
@@ -79,8 +81,11 @@ void	ft_ssl_get_result(t_env *env)
 	uint8_t	*ptr;
 	int		i;
 
-	i = 0;
+	i = -1;
+	while (++i < 8)
+		env->result[i] = byte_swap32(env->result[i]);
 	ptr = (uint8_t*)env->result;
+	i = 0;
 	while (i < env->output_size - 1)
 	{
 		byte_to_hexa(&env->output[i], ptr[i / 2]);

@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:12:20 by wta               #+#    #+#             */
-/*   Updated: 2019/10/17 18:02:16 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/18 12:49:25 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	end_digest(t_env *env)
 	uint64_t	*ptr;
 
 	env->d_buffer.buffer[env->d_buffer.len] = 1 << 7;
+	if (env->big_endian)
+		byte_swap32_buffer((uint32_t*)env->d_buffer.buffer, 16);
 	if (CHUNK_SIZE - env->d_buffer.len <= 8)
 	{
 		env->cmd(env, (uint32_t*)env->d_buffer.buffer);
@@ -77,9 +79,11 @@ void	end_digest(t_env *env)
 	}
 	ptr = (uint64_t*)&env->d_buffer.buffer[56];
 	bitlen = env->data_len * 8;
-	if (ft_strequ(env->cmd_name, "sha256"))
+	if (env->big_endian)
 		bitlen = byte_swap64(bitlen);
 	*ptr = bitlen;
+	if (env->big_endian)
+		byte_swap32_buffer((uint32_t*)ptr, 2);
 	env->cmd(env, (uint32_t*)env->d_buffer.buffer);
 }
 
@@ -90,7 +94,11 @@ void	process_round(t_env *env, size_t start, size_t end, uint8_t *data)
 		if (end - start < CHUNK_SIZE)
 			fill_buffer(&env->d_buffer, &data[start], end - start);
 		else
+		{
+			if (env->big_endian)
+				byte_swap32_buffer((uint32_t*)&data[start], 16);
 			env->cmd(env, (uint32_t*)&data[start]);
+		}
 		start += CHUNK_SIZE;
 	}
 }

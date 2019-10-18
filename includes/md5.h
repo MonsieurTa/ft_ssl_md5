@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:54:27 by wta               #+#    #+#             */
-/*   Updated: 2019/10/17 17:03:54 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/18 11:55:41 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #define MD5_FN_G(b,c,d)			((b & d) | (c & ~d))
 #define MD5_FN_H(b,c,d)			(b ^ c ^ d)
 #define MD5_FN_I(b,c,d)			(c ^ (b | ~d))
-#define LEFT_ROTATE(x,c)		((x << c) | (x >> (32 - c)))
+#define LEFT_ROTATE(x,c)		((x << c) | (x >> (sizeof(x) * 8 - c)))
 
 #define MD5_OUTPUT_SIZE 32
 

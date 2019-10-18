@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2019/10/17 18:01:42 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/18 11:24:28 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct	s_env
 	uint32_t		result[8];
 	char			output[OUTPUT_SIZE + 1];
 	uint8_t			output_size;
+	char			big_endian;
 }				t_env;
 
 void		ft_ssl_read(t_env *env, int fd);
@@ -70,6 +71,7 @@ uint64_t	align_up(int n, uint64_t mod);
 uint32_t	byte_swap32(uint32_t x);
 uint64_t	byte_swap64(uint64_t x);
 void		byte_to_hexa(char *dst, uint8_t byte);
+void		byte_swap32_buffer(uint32_t *buffer, size_t size);
 void		print_to_upper(char *str);
 
 int			throw_error(t_env *env, int err_code);
