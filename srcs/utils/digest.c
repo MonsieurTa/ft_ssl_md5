@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:12:20 by wta               #+#    #+#             */
-/*   Updated: 2019/10/18 12:49:25 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/20 19:39:15 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ int		digest_file(t_env *env, char *filepath)
 
 	env->input_src = filepath;
 	if ((fd = open(filepath, O_RDONLY)) == -1)
-		return throw_error(env, ERR_MISSING);
+		return (throw_error(env, ERR_MISSING));
 	if (read(fd, NULL, 0) < 0)
-		return throw_error(env, ERR_INVALID_FILE);
-	ft_ssl_read(env, fd);
+		return (throw_error(env, ERR_INVALID_FILE));
+	cmd_read(env, fd);
 	close(fd);
-	return 1;
+	return (1);
 }
 
 void	digest_files(t_env *env, char **filepaths, int index_max)
@@ -49,7 +49,7 @@ void	digest_files(t_env *env, char **filepaths, int index_max)
 int		digest_string(t_env *env, char *residual_opt, int index)
 {
 	if (*residual_opt == '\0' && index == env->option.opt_count)
-		return throw_error(env, ERR_OPT_REQ_ARG);
+		return (throw_error(env, ERR_OPT_REQ_ARG));
 	if (*residual_opt != '\0')
 	{
 		env->input_src = residual_opt;
@@ -61,7 +61,7 @@ int		digest_string(t_env *env, char *residual_opt, int index)
 		env->input_src = env->option.opt_list[index];
 		ft_ssl_string(env, env->option.opt_list[index]);
 	}
-	return 1;
+	return (1);
 }
 
 void	end_digest(t_env *env)

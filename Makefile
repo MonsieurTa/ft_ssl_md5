@@ -6,12 +6,12 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/10/17 17:08:29 by wta              ###   ########.fr        #
+#    Updated: 2019/10/20 19:52:24 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ssl
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 CC = gcc -O2
 
 INC_DIR = includes
@@ -23,16 +23,20 @@ HEADERS =		\
 ft_ssl.h		\
 md5.h			\
 option.h		\
-sha256.h
+sha.h
 
 SRCS =				\
 md5/md5.c			\
-sha256/sha256.c		\
+sha/sha1.c			\
+sha/sha224.c		\
+sha/sha256.c		\
+utils/array.c		\
 utils/bytes.c		\
 utils/digest.c		\
 utils/io.c			\
 utils/math.c		\
 utils/tracker.c		\
+cmd.c				\
 error.c				\
 format.c			\
 main.c				\
@@ -50,7 +54,7 @@ $(NAME): $(addprefix $(OBJ_DIR)/, $(OBJ))
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(OBJ_DIR)/md5
-	mkdir -p $(OBJ_DIR)/sha256
+	mkdir -p $(OBJ_DIR)/sha
 	mkdir -p $(OBJ_DIR)/utils
 
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c $(addprefix $(INC_DIR)/, $(HEADERS)) | $(OBJ_DIR)

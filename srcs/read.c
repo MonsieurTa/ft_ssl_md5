@@ -6,11 +6,13 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 10:22:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/18 12:11:18 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/20 19:45:21 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
+#include "get_next_line.h"
 #include "ft_ssl.h"
 #include "md5.h"
 
@@ -20,7 +22,7 @@ size_t	process_buffer(t_env *env, t_digest_buffer *d_buffer,
 	size_t	to_fill;
 
 	if (d_buffer->len == 0)
-		return 0;
+		return (0);
 	to_fill = CHUNK_SIZE - d_buffer->len;
 	if (to_fill > size)
 		to_fill = size;
@@ -33,34 +35,13 @@ size_t	process_buffer(t_env *env, t_digest_buffer *d_buffer,
 		env->cmd(env, (uint32_t*)d_buffer->buffer);
 		ft_bzero(d_buffer, sizeof(t_digest_buffer));
 	}
-	return to_fill;
+	return (to_fill);
 }
 
 void	fill_buffer(t_digest_buffer *d_buffer, uint8_t *r_buffer, size_t size)
 {
 	ft_memcpy(d_buffer->buffer, (void*)r_buffer, size);
 	d_buffer->len = size;
-}
-
-void	ft_ssl_read(t_env *env, int fd)
-{
-	size_t	ret;
-	size_t	i;
-
-	env->init_cmd(env);
-	env->data_len = 0;
-	ft_bzero(&env->d_buffer, sizeof(t_digest_buffer));
-	while ((ret = read(fd, env->d_buffer.r_buffer, READ_BUFFER_LEN)) > 0)
-	{
-		env->data_len += ret;
-		env->d_buffer.r_buffer[ret] = '\0';
-		if (option_has(&env->option, OPT_PRINT))
-			track_input(env, env->d_buffer.r_buffer);
-		i = process_buffer(env, &env->d_buffer, env->d_buffer.r_buffer, ret);
-		process_round(env, i, ret, env->d_buffer.r_buffer);
-	}
-	end_digest(env);
-	ft_ssl_get_result(env);
 }
 
 void	ft_ssl_string(t_env *env, char *str)
@@ -82,7 +63,7 @@ void	ft_ssl_get_result(t_env *env)
 	int		i;
 
 	i = -1;
-	while (++i < 8)
+	while (env->big_endian && ++i < 8)
 		env->result[i] = byte_swap32(env->result[i]);
 	ptr = (uint8_t*)env->result;
 	i = 0;
@@ -92,4 +73,36 @@ void	ft_ssl_get_result(t_env *env)
 		i += 2;
 	}
 	format_output(env);
+}
+
+int		ft_ssl_read(t_env *env)
+{
+	char	**args;
+	char	*line;
+	int		gnl_ret;
+	int		ac;
+
+	ft_bzero(env, sizeof(t_env));
+	ft_putstr("ft_ssl> ");
+	gnl_ret = get_next_line(STDIN_FILENO, &line);
+	if (gnl_ret == -1)
+		return throw_error(env, ERR_PANIC);
+	else if (gnl_ret == 0)
+		exit(0);
+	if ((args = ft_strsplit(line, ' ')) != NULL)
+	{
+		ac = strings_array_len(args);
+		if (ac && get_cmd(env, args[0]))
+		{
+			if (ac > 1)
+				digest_files(env, args + 1, ac - 1);
+			else
+				cmd_read(env, STDIN_FILENO);
+		}
+		else
+			ft_putchar('\n');
+		del_tab(args, ac);
+	}
+	ft_strdel(&line);
+	return (1);
 }
