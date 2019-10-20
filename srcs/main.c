@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2019/10/20 18:27:46 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/21 11:43:12 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	ft_ssl_assign_cmd(t_env *env, void (*init)(t_env *),
 {
 	env->cmd = cmd;
 	env->init_cmd = init;
-	return 1;
+	return (1);
 }
 
 static void	process_cli(t_env *env, int ac, char **av)
@@ -45,13 +45,13 @@ int			get_cmd(t_env *env, char *str)
 {
 	ft_memcpy(env->cmd_name, str, MIN(MAX_CMD_SIZE, ft_strlen(str)));
 	if (ft_strequ(str, "md5"))
-		return ft_ssl_assign_cmd(env, md5_init, md5);
+		return (ft_ssl_assign_cmd(env, md5_init, md5));
 	else if (ft_strequ(str, "sha256"))
-		return ft_ssl_assign_cmd(env, sha256_init, sha256);
+		return (ft_ssl_assign_cmd(env, sha256_init, sha256));
 	else if (ft_strequ(str, "sha1"))
-		return ft_ssl_assign_cmd(env, sha1_init, sha1);
+		return (ft_ssl_assign_cmd(env, sha1_init, sha1));
 	else if (ft_strequ(str, "sha224"))
-		return ft_ssl_assign_cmd(env, sha224_init, sha256);
+		return (ft_ssl_assign_cmd(env, sha224_init, sha256));
 	return (throw_error(env, ERR_BAD_CMD));
 }
 

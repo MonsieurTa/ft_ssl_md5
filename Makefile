@@ -6,7 +6,7 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/10/20 19:52:24 by wta              ###   ########.fr        #
+#    Updated: 2019/10/21 11:46:01 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ sha/sha1.c			\
 sha/sha224.c		\
 sha/sha256.c		\
 utils/array.c		\
+utils/buffer.c		\
 utils/bytes.c		\
 utils/digest.c		\
 utils/io.c			\

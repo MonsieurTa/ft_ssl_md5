@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2019/10/20 19:40:35 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/21 11:50:38 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void			byte_to_hexa(char *dst, uint8_t byte);
 void			byte_swap32_buffer(uint32_t *buffer, size_t size);
 void			print_to_upper(char *str);
 int				strings_array_len(char **array);
-
 
 int				throw_error(t_env *env, int err_code);
 

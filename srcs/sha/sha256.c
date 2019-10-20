@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sha.c                                           :+:      :+:    :+:   */
+/*   sha256.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/17 15:30:13 by wta               #+#    #+#             */
-/*   Updated: 2019/10/20 15:26:10 by wta              ###   ########.fr       */
+/*   Created: 2019/10/20 19:46:49 by wta               #+#    #+#             */
+/*   Updated: 2019/10/20 19:47:10 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void		sha256_assign_hash(uint32_t w[8], uint32_t tmp1, uint32_t tmp2)
 	w[0] = tmp1 + tmp2;
 }
 
-void		assign_data_to_words(uint32_t words[64], uint32_t *chunk)
+void			assign_data_to_words(uint32_t words[64], uint32_t *chunk)
 {
 	int	i;
 

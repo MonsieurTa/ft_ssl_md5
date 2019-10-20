@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 11:59:52 by wta               #+#    #+#             */
-/*   Updated: 2019/10/20 18:32:06 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/21 11:55:48 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 #include "ft_ssl.h"
 #include "libft.h"
 
-static char	*g_usage = "usage: ./ft_ssl [md5 | sha256]	\
-[-prq] [-s string] [files ...]\n";
+static char	*g_usage = "usage: ./ft_ssl [md5 | sha1 | sha224 | sha256]"
+"[-prq] [-s string] [files ...]\n";
 
 static void	error_bad_cmd(t_env *env)
 {
@@ -54,8 +54,9 @@ static void	error_invalid_file(t_env *env, char *msg)
 
 static void	error_panic(t_env *env)
 {
-	char	msg[] = "Something went wrong: Clean exit...";
-	write(STDERR_FILENO, "ft_ssl:PANIC: ", 8);
+	static char	msg[] = "Something went wrong: Clean exit...";
+
+	write(STDERR_FILENO, "ft_ssl:PANIC: ", 14);
 	write(STDERR_FILENO, msg, ft_strlen(msg));
 	ft_memdel((void**)&env->input);
 	exit(0);
