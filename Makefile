@@ -12,7 +12,7 @@
 
 NAME = ft_ssl
 CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
-CC = gcc -O2
+CC = cc -O2
 
 INC_DIR = includes
 OBJ_DIR = objs
