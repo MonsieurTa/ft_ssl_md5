@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 15:15:47 by wta               #+#    #+#             */
-/*   Updated: 2019/10/20 18:44:15 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/21 12:25:28 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	print_outputln(t_env *env)
 
 static void	print_reverse_output(t_env *env)
 {
-	print_outputln(env);
+	write(STDOUT_FILENO, env->output, env->output_size);
 	ft_putstr(option_has(&env->option, OPT_STRING) ? " \"" : " ");
 	ft_putstr(env->input_src);
 	ft_putendl(option_has(&env->option, OPT_STRING) ? "\"" : "");
