@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:13:52 by wta               #+#    #+#             */
-/*   Updated: 2019/10/20 18:44:57 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 14:21:06 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,5 @@ int			manage_options(t_env *env)
 
 int			option_has(t_option *option, int opt)
 {
-	if (option->opts & opt)
-	{
-		if (option->opts == OPT_STRING && option->residual_opt)
-			return (0);
-		return (1);
-	}
-	return (0);
+	return ((option->opts & opt) != 0);
 }

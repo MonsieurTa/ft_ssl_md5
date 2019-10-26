@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2019/10/26 13:01:24 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 14:56:43 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static void	process_cli(t_env *env, int ac, char **av)
 		env->option.opts ^= (env->option.opts & OPT_STRING);
 		if (files_index != -1)
 			digest_files(env, &av[files_index], ac - files_index);
-		else
+		else if (option_has(&env->option, OPT_REVERSE)
+		|| option_has(&env->option, OPT_QUIET))
 			cmd_read(env, STDIN_FILENO);
 	}
 	else if (ac == 2)

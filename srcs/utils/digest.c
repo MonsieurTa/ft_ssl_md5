@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:12:20 by wta               #+#    #+#             */
-/*   Updated: 2019/10/20 19:39:15 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 14:44:12 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,10 @@ int		digest_string(t_env *env, char *residual_opt, int index)
 		env->input_src = residual_opt;
 		ft_ssl_string(env, residual_opt);
 		env->option.residual_opt = 1;
+		return (0);
 	}
-	else
-	{
-		env->input_src = env->option.opt_list[index];
-		ft_ssl_string(env, env->option.opt_list[index]);
-	}
+	env->input_src = env->option.opt_list[index];
+	ft_ssl_string(env, env->option.opt_list[index]);
 	return (1);
 }
 
