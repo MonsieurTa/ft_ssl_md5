@@ -6,7 +6,7 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/10/26 12:44:49 by wta              ###   ########.fr        #
+#    Updated: 2019/10/26 16:24:49 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,6 @@ utils/bytes.c		\
 utils/digest.c		\
 utils/io.c			\
 utils/math.c		\
-utils/tracker.c		\
 cmd.c				\
 error.c				\
 format.c			\
