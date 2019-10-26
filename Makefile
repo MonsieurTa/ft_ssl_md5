@@ -6,15 +6,15 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/10/21 11:46:01 by wta              ###   ########.fr        #
+#    Updated: 2019/10/26 12:44:49 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ssl
-CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror# -g3 -fsanitize=address
 CC = cc -O2
 
-INC_DIR = includes
+INC_DIR = include
 OBJ_DIR = objs
 SRCS_DIR =	srcs
 LIBFT = libft
@@ -27,6 +27,7 @@ sha.h
 
 SRCS =				\
 md5/md5.c			\
+sha/setters.c		\
 sha/sha1.c			\
 sha/sha224.c		\
 sha/sha256.c		\
@@ -49,7 +50,7 @@ OBJ = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(addprefix $(OBJ_DIR)/, $(OBJ))
-	$(MAKE) -C libft
+	$(MAKE) -j10 -C libft
 	$(CC) $(CFLAGS) $^ -L $(LIBFT) -lft -o $@
 
 $(OBJ_DIR):
