@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:12:20 by wta               #+#    #+#             */
-/*   Updated: 2019/10/26 14:44:12 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 15:03:06 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ int		digest_file(t_env *env, char *filepath)
 	if ((fd = open(filepath, O_RDONLY)) == -1)
 		return (throw_error(env, ERR_MISSING));
 	if (read(fd, NULL, 0) < 0)
+	{
+		close(fd);
 		return (throw_error(env, ERR_INVALID_FILE));
+	}
 	cmd_read(env, fd);
 	close(fd);
 	return (1);
