@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:54:27 by wta               #+#    #+#             */
-/*   Updated: 2019/10/20 15:26:45 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 12:28:15 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ extern uint32_t	g_constants[];
 
 void			ft_ssl_get_result(t_env *env);
 void			md5_init(t_env *env);
-void			md5(t_env *env, uint32_t *chunk);
+int				set_md5(t_env *env, char *name);
 
 #endif

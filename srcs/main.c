@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2019/10/21 11:43:12 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 12:39:15 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 #include "sha.h"
 #include "option.h"
 
-static int	ft_ssl_assign_cmd(t_env *env, void (*init)(t_env *),
-					void (*cmd)(t_env *, uint32_t *))
-{
-	env->cmd = cmd;
-	env->init_cmd = init;
-	return (1);
-}
+static int	(*g_cmds[])(t_env *, char *) = {
+	set_md5,
+	set_sha1,
+	set_sha224,
+	set_sha256,
+	NULL
+};
 
 static void	process_cli(t_env *env, int ac, char **av)
 {
@@ -41,18 +41,17 @@ static void	process_cli(t_env *env, int ac, char **av)
 		cmd_read(env, STDIN_FILENO);
 }
 
-int			get_cmd(t_env *env, char *str)
+int			get_cmd(t_env *env, char *name)
 {
-	ft_memcpy(env->cmd_name, str, MIN(MAX_CMD_SIZE, ft_strlen(str)));
-	if (ft_strequ(str, "md5"))
-		return (ft_ssl_assign_cmd(env, md5_init, md5));
-	else if (ft_strequ(str, "sha256"))
-		return (ft_ssl_assign_cmd(env, sha256_init, sha256));
-	else if (ft_strequ(str, "sha1"))
-		return (ft_ssl_assign_cmd(env, sha1_init, sha1));
-	else if (ft_strequ(str, "sha224"))
-		return (ft_ssl_assign_cmd(env, sha224_init, sha256));
-	return (throw_error(env, ERR_BAD_CMD));
+	size_t	i;
+
+	i = 0;
+	ft_memcpy(env->cmd_name, name, MIN(MAX_CMD_SIZE, ft_strlen(name)));
+	while (g_cmds[i] && g_cmds[i](env, name) == 0)
+		i++;
+	if (!g_cmds[i])
+		return (throw_error(env, ERR_BAD_CMD));
+	return (1);
 }
 
 int			main(int ac, char **av)

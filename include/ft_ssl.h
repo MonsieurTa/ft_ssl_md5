@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2019/10/21 11:50:38 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 12:25:17 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct	s_env
 
 void			ft_ssl_get_result(t_env *env);
 int				ft_ssl_read(t_env *env);
-int				get_cmd(t_env *env, char *str);
+int				get_cmd(t_env *env, char *name);
 void			cmd_read(t_env *env, int fd);
 void			ft_ssl_string(t_env *env, char *str);
 void			digest_files(t_env *env, char **filepaths, int index_max);

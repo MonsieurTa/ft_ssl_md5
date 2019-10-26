@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 15:07:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/21 11:50:29 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 12:28:26 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,9 @@ void	sha224_init(t_env *env);
 
 void	sha1(t_env *env, uint32_t *chunk);
 void	sha1_init(t_env *env);
+
+int		set_sha1(t_env *env, char *name);
+int		set_sha224(t_env *env, char *name);
+int		set_sha256(t_env *env, char *name);
 
 #endif

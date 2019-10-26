@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:07:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/20 19:40:19 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 12:30:22 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "ft_ssl.h"
 #include "md5.h"
 
-uint32_t	g_constants[] = {
+uint32_t		g_constants[] = {
 	0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
 	0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
 	0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
@@ -35,21 +35,21 @@ uint32_t	g_constants[] = {
 	0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391,
 };
 
-uint8_t	g_left_shifts[] = {
+uint8_t		g_left_shifts[] = {
 	7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
 	5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
 	4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
 	6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21,
 };
 
-uint8_t	g_md5_g[] = {
+uint8_t		g_md5_g[] = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 	1, 6, 11, 0, 5, 10, 15, 4, 9, 14, 3, 8, 13, 2, 7, 12,
 	5, 8, 11, 14, 1, 4, 7, 10, 13, 0, 3, 6, 9, 12, 15, 2,
 	0, 7, 14, 5, 12, 3, 10, 1, 8, 15, 6, 13, 4, 11, 2, 9
 };
 
-void	md5_init(t_env *env)
+void		md5_init(t_env *env)
 {
 	env->result[0] = 0x67452301;
 	env->result[1] = 0xefcdab89;
@@ -58,7 +58,7 @@ void	md5_init(t_env *env)
 	env->output_size = FT_SSL_32_OUTPUT;
 }
 
-void	md5(t_env *env, uint32_t *chunk)
+static void	md5(t_env *env, uint32_t *chunk)
 {
 	uint32_t	digest[4];
 	uint32_t	f;
@@ -85,4 +85,13 @@ void	md5(t_env *env, uint32_t *chunk)
 	i = -1;
 	while (++i < 4)
 		env->result[i] += digest[i];
+}
+
+int			set_md5(t_env *env, char *name)
+{
+	if (!ft_strequ(name, "md5"))
+		return (0);
+	env->cmd = md5;
+	env->init_cmd = md5_init;
+	return (1);
 }
