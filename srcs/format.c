@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 15:15:47 by wta               #+#    #+#             */
-/*   Updated: 2019/10/26 14:56:52 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 15:56:06 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void		format_output(t_env *env)
 	else if (option_has(opt, OPT_PRINT) && !(option_has(opt, OPT_ISFILE)))
 	{
 		opt->opts ^= OPT_PRINT;
-		if (env->input)
-			write(STDOUT_FILENO, env->input, ft_strlen(env->input));
 		print_outputln(env);
 	}
 	else if (option_has(opt, OPT_ISFILE) || option_has(opt, OPT_STRING))
@@ -60,5 +58,4 @@ void		format_output(t_env *env)
 	}
 	else
 		print_outputln(env);
-	ft_memdel((void**)&env->input);
 }

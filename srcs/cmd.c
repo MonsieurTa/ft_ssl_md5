@@ -6,10 +6,11 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 17:36:29 by wta               #+#    #+#             */
-/*   Updated: 2019/10/20 17:37:18 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 15:54:56 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include "libft.h"
 #include "ft_ssl.h"
 
@@ -26,7 +27,7 @@ void	cmd_read(t_env *env, int fd)
 		env->data_len += ret;
 		env->d_buffer.r_buffer[ret] = '\0';
 		if (option_has(&env->option, OPT_PRINT))
-			track_input(env, env->d_buffer.r_buffer);
+			write(STDOUT_FILENO, env->d_buffer.r_buffer, ret);
 		i = process_buffer(env, &env->d_buffer, env->d_buffer.r_buffer, ret);
 		process_round(env, i, ret, env->d_buffer.r_buffer);
 	}

@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 11:59:52 by wta               #+#    #+#             */
-/*   Updated: 2019/10/21 11:55:48 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 16:07:52 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static void	error_illegal_opt(t_env *env, char *msg)
 	write(STDERR_FILENO, &env->option.curr_opt, 1);
 	write(STDERR_FILENO, "\n", 1);
 	write(STDERR_FILENO, g_usage, ft_strlen(g_usage));
-	ft_memdel((void**)&env->input);
 	exit(0);
 }
 
@@ -49,16 +48,14 @@ static void	error_invalid_file(t_env *env, char *msg)
 	write(STDERR_FILENO, ": ", 2);
 	write(STDERR_FILENO, env->input_src, ft_strlen(env->input_src));
 	write(STDERR_FILENO, msg, ft_strlen(msg));
-	ft_memdel((void**)&env->input);
 }
 
-static void	error_panic(t_env *env)
+static void	error_panic(void)
 {
 	static char	msg[] = "Something went wrong: Clean exit...";
 
 	write(STDERR_FILENO, "ft_ssl:PANIC: ", 14);
 	write(STDERR_FILENO, msg, ft_strlen(msg));
-	ft_memdel((void**)&env->input);
 	exit(0);
 }
 
@@ -67,7 +64,7 @@ int			throw_error(t_env *env, int err_code)
 	if (err_code == ERR_BAD_CMD)
 		error_bad_cmd(env);
 	else if (err_code == ERR_PANIC)
-		error_panic(env);
+		error_panic();
 	else if (err_code == ERR_USAGE)
 		write(STDERR_FILENO, g_usage, ft_strlen(g_usage));
 	else if (err_code == ERR_ILLEGAL_OPT)

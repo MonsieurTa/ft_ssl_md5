@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2019/10/26 12:25:17 by wta              ###   ########.fr       */
+/*   Updated: 2019/10/26 16:02:04 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef struct	s_env
 	char			cmd_name[MAX_CMD_SIZE + 1];
 	t_option		option;
 	char			*input_src;
-	char			*input;
 	uint64_t		data_len;
 	t_digest_buffer	d_buffer;
 	uint32_t		result[8];
@@ -74,7 +73,6 @@ void			ft_ssl_string(t_env *env, char *str);
 void			digest_files(t_env *env, char **filepaths, int index_max);
 int				digest_string(t_env *env, char *residual_opt, int index);
 void			end_digest(t_env *env);
-int				track_input(t_env *env, uint8_t *input_buffer);
 size_t			process_buffer(t_env *env, t_digest_buffer *d_buffer,
 								uint8_t *r_buffer, size_t size);
 void			process_round(t_env *env, size_t start,
