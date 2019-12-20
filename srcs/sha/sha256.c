@@ -6,13 +6,14 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 19:46:49 by wta               #+#    #+#             */
-/*   Updated: 2019/10/20 19:47:10 by wta              ###   ########.fr       */
+/*   Updated: 2019/12/20 17:15:04 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_ssl.h"
 #include "sha.h"
+#include SHA_FN
 
 static uint32_t g_sha256_k[] = {
 	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
@@ -40,8 +41,8 @@ static void		extend_words(uint32_t words[64])
 	i = 16;
 	while (i < CHUNK_SIZE)
 	{
-		words[i] = SSIG1(words[i - 2]) + words[i - 7]
-		+ SSIG0(words[i - 15]) + words[i - 16];
+		words[i] = ssig1(words[i - 2]) + words[i - 7]
+		+ ssig0(words[i - 15]) + words[i - 16];
 		i++;
 	}
 }
@@ -98,9 +99,9 @@ void			sha256(t_env *env, uint32_t *chunk)
 	extend_words(words);
 	while (++i < CHUNK_SIZE)
 	{
-		tmp1 = w[7] + BSIG1(w[4])
-		+ CH(w[4], w[5], w[6]) + g_sha256_k[i] + words[i];
-		tmp2 = BSIG0(w[0]) + MAJ(w[0], w[1], w[2]);
+		tmp1 = w[7] + bsig1(w[4])
+		+ ch(w[4], w[5], w[6]) + g_sha256_k[i] + words[i];
+		tmp2 = bsig0(w[0]) + maj(w[0], w[1], w[2]);
 		sha256_assign_hash(w, tmp1, tmp2);
 	}
 	i = -1;

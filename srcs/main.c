@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2019/10/26 14:56:43 by wta              ###   ########.fr       */
+/*   Updated: 2019/12/20 17:16:00 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			get_cmd(t_env *env, char *name)
 	size_t	i;
 
 	i = 0;
-	ft_memcpy(env->cmd_name, name, MIN(MAX_CMD_SIZE, ft_strlen(name)));
+	ft_memcpy(env->cmd_name, name, min(MAX_CMD_SIZE, ft_strlen(name)));
 	while (g_cmds[i] && g_cmds[i](env, name) == 0)
 		i++;
 	if (!g_cmds[i])

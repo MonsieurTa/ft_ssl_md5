@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   math.c                                             :+:      :+:    :+:   */
+/*   md5_fn.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/16 11:01:53 by wta               #+#    #+#             */
-/*   Updated: 2019/12/20 17:15:54 by wta              ###   ########.fr       */
+/*   Created: 2019/12/20 17:24:44 by wta               #+#    #+#             */
+/*   Updated: 2019/12/20 17:24:52 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 
-uint64_t	align_up(int n, uint64_t mod)
+static inline uint32_t	md5_fn_f(uint32_t b, uint32_t c, uint32_t d)
 {
-	uint64_t	res;
-
-	res = n % mod;
-	return (res == 0 ? n : (n - res) + mod);
+	return ((b & c) | (~b & d));
 }
 
-uint32_t	min(uint32_t a, uint32_t b)
+static inline uint32_t	md5_fn_g(uint32_t b, uint32_t c, uint32_t d)
 {
-	return (a < b ? a : b);
+	return ((b & d) | (c & ~d));
+}
+
+static inline uint32_t	md5_fn_h(uint32_t b, uint32_t c, uint32_t d)
+{
+	return (b ^ c ^ d);
+}
+
+static inline uint32_t	md5_fn_i(uint32_t b, uint32_t c, uint32_t d)
+{
+	return (c ^ (b | ~d));
 }

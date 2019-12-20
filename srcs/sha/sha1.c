@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 15:23:15 by wta               #+#    #+#             */
-/*   Updated: 2019/10/26 11:55:49 by wta              ###   ########.fr       */
+/*   Updated: 2019/12/20 17:08:40 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "ft_ssl.h"
 #include "md5.h"
 #include "sha.h"
+#include SSL_FN
 
 static uint32_t	g_sha1_k[] = {
 	0x5A827999,
@@ -25,13 +26,13 @@ static uint32_t	g_sha1_k[] = {
 static uint32_t	sha1_assign(int i, uint32_t digest[])
 {
 	if (i < 20)
-		return (CH(digest[1], digest[2], digest[3]));
+		return (ch(digest[1], digest[2], digest[3]));
 	else if (i < 40)
-		return (PAR(digest[1], digest[2], digest[3]));
+		return (par(digest[1], digest[2], digest[3]));
 	else if (i < 60)
-		return (MAJ(digest[1], digest[2], digest[3]));
+		return (maj(digest[1], digest[2], digest[3]));
 	else
-		return (PAR(digest[1], digest[2], digest[3]));
+		return (par(digest[1], digest[2], digest[3]));
 }
 
 static void		extend_words(uint32_t w[])
@@ -40,7 +41,7 @@ static void		extend_words(uint32_t w[])
 
 	i = 15;
 	while (++i < 80)
-		w[i] = LR((w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16]), 1);
+		w[i] = lr((w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16]), 1);
 }
 
 void			sha1_init(t_env *env)
@@ -66,10 +67,10 @@ void			sha1(t_env *env, uint32_t *chunk)
 	while (++i < 80)
 	{
 		f = sha1_assign(i, digest);
-		f = LR(digest[0], 5) + f + digest[4] + g_sha1_k[i / 20] + w[i];
+		f = lr(digest[0], 5) + f + digest[4] + g_sha1_k[i / 20] + w[i];
 		digest[4] = digest[3];
 		digest[3] = digest[2];
-		digest[2] = LR(digest[1], 30);
+		digest[2] = lr(digest[1], 30);
 		digest[1] = digest[0];
 		digest[0] = f;
 	}

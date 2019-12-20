@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:07:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/26 12:30:22 by wta              ###   ########.fr       */
+/*   Updated: 2019/12/20 17:07:42 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "libft.h"
 #include "ft_ssl.h"
 #include "md5.h"
+#include MD5_FN
+#include SSL_FN
 
 uint32_t		g_constants[] = {
 	0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
@@ -69,18 +71,18 @@ static void	md5(t_env *env, uint32_t *chunk)
 	while (++i < CHUNK_SIZE)
 	{
 		if (i < 16)
-			f = MD5_FN_F(digest[1], digest[2], digest[3]);
+			f = md5_fn_f(digest[1], digest[2], digest[3]);
 		else if (i < 32)
-			f = MD5_FN_G(digest[1], digest[2], digest[3]);
+			f = md5_fn_g(digest[1], digest[2], digest[3]);
 		else if (i < 48)
-			f = MD5_FN_H(digest[1], digest[2], digest[3]);
+			f = md5_fn_h(digest[1], digest[2], digest[3]);
 		else
-			f = MD5_FN_I(digest[1], digest[2], digest[3]);
+			f = md5_fn_i(digest[1], digest[2], digest[3]);
 		f += digest[0] + g_constants[i] + chunk[g_md5_g[i]];
 		digest[0] = digest[3];
 		digest[3] = digest[2];
 		digest[2] = digest[1];
-		digest[1] = digest[1] + LR(f, g_left_shifts[i]);
+		digest[1] = digest[1] + lr(f, g_left_shifts[i]);
 	}
 	i = -1;
 	while (++i < 4)

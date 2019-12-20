@@ -6,17 +6,14 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 15:07:18 by wta               #+#    #+#             */
-/*   Updated: 2019/10/26 12:28:26 by wta              ###   ########.fr       */
+/*   Updated: 2019/12/20 17:01:08 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SHA_H
 # define SHA_H
 
-# define BSIG0(x)			((RR(x,2)) ^ (RR(x,13)) ^ (RR(x,22)))
-# define BSIG1(x)			((RR(x,6)) ^ (RR(x,11)) ^ (RR(x,25)))
-# define SSIG0(x)			((RR(x,7)) ^ (RR(x,18)) ^ ((x) >> 3))
-# define SSIG1(x)			((RR(x,17)) ^ (RR(x,19)) ^ ((x) >> 10))
+# define SHA_FN	"sha_fn.c"
 
 # include <stdint.h>
 # include "ft_ssl.h"

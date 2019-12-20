@@ -6,33 +6,28 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2019/10/26 16:02:04 by wta              ###   ########.fr       */
+/*   Updated: 2019/12/20 17:17:22 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_SSL_H
 # define FT_SSL_H
 
-# define MIN(a,b)			(a < b ? a : b)
-# define LR(x,c)			(((x) << c) | ((x) >> (sizeof(x) * 8 - c)))
-# define RR(x,c)			(((x) >> c) | ((x) << (sizeof(x) * 8 - c)))
-# define CH(x,y,z)			((x & y) ^ (~x & z))
-# define MAJ(x,y,z) 		((x & y) ^ (x & z) ^ (y & z))
-# define PAR(x,y,z)			(x ^ y ^ z)
+# define SSL_FN							"../utils/ssl_fn.c"
 
-# define READ_BUFFER_LEN	4096
-# define MAX_CMD_SIZE		64
-# define CHUNK_SIZE			64
-# define OUTPUT_SIZE		256
+# define READ_BUFFER_LEN		4096
+# define MAX_CMD_SIZE				64
+# define CHUNK_SIZE					64
+# define OUTPUT_SIZE				256
 
-# define ERRNOERROR			0x1
-# define ERR_BAD_CMD		0x2
-# define ERR_USAGE			0x4
-# define ERR_ILLEGAL_OPT	0x8
-# define ERR_MISSING		0x10
-# define ERR_INVALID_FILE	0x20
-# define ERR_PANIC			0x40
-# define ERR_OPT_REQ_ARG	0x80
+# define ERRNOERROR					0x1
+# define ERR_BAD_CMD				0x2
+# define ERR_USAGE					0x4
+# define ERR_ILLEGAL_OPT		0x8
+# define ERR_MISSING				0x10
+# define ERR_INVALID_FILE		0x20
+# define ERR_PANIC					0x40
+# define ERR_OPT_REQ_ARG		0x80
 
 # define FT_SSL_64_OUTPUT		64
 # define FT_SSL_56_OUTPUT		56
@@ -84,6 +79,7 @@ void			format_output(t_env *env);
 
 void			print_bit(char c, int len);
 uint64_t		align_up(int n, uint64_t mod);
+uint32_t		min(uint32_t a, uint32_t b);
 uint32_t		byte_swap32(uint32_t x);
 uint64_t		byte_swap64(uint64_t x);
 void			byte_to_hexa(char *dst, uint8_t byte);
