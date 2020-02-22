@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:13:52 by wta               #+#    #+#             */
-/*   Updated: 2020/02/22 14:53:06 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/22 15:03:19 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,28 @@ static int	apply_option(t_hash *hash_env, char c, char *opts)
 	return (-1);
 }
 
-static int	parse_option(t_hash *hash_env, int idx)
+static int	parse_option(t_hash *hash_env, int i)
 {
 	t_option	*opt;
 	char		c;
 	int			ret;
-	int			i;
+	int			j;
 	int			len;
 
-	i = 0;
+	j = 0;
 	opt = &hash_env->option;
-	len = ft_strlen(opt->opt_list[idx]);
-	if (opt->opt_list[idx][i++] != '-' || len == 1)
+	len = ft_strlen(opt->opt_list[i]);
+	if (opt->opt_list[i][j++] != '-' || len == 1)
 		return (0);
 	ret = 1;
-	while ((c = opt->opt_list[idx][i]) != '\0' && ret)
+	while ((c = opt->opt_list[i][j]) != '\0' && ret)
 	{
 		opt->curr_opt = c;
 		if ((ret = apply_option(hash_env, c, &opt->opts)) == -1)
 			throw_hash_opt_error(hash_env, ERR_ILLEGAL_OPT);
 		if (option_has(opt, OPT_STRING))
-			return (digest_string(hash_env, &opt->opt_list[idx][i + 1], idx + 1));
-		i++;
+			return (digest_string(hash_env, &opt->opt_list[i][j + 1], i + 1));
+		j++;
 	}
 	return (1);
 }

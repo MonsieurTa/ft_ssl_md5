@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 11:59:52 by wta               #+#    #+#             */
-/*   Updated: 2020/02/22 14:47:31 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/22 15:06:05 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 static char	*g_usage = "usage: ./ft_ssl [md5 | sha1 | sha224 | sha256]"
 "[-prq] [-s string] [files ...]\n";
 
-int error_bad_cmd(t_env *env)
+int			error_bad_cmd(t_env *env)
 {
 	write(STDERR_FILENO, "ft_ssl:Error: '", 15);
 	write(STDERR_FILENO, env->cmd_name, ft_strlen(env->cmd_name));
@@ -31,7 +31,7 @@ int error_bad_cmd(t_env *env)
 	return (0);
 }
 
-int error_illegal_opt(t_hash *hash_env, char *msg)
+int			error_illegal_opt(t_hash *hash_env, char *msg)
 {
 	write(STDERR_FILENO, "ft_ssl: ", 8);
 	write(STDERR_FILENO, hash_env->cmd_name, ft_strlen(hash_env->cmd_name));
@@ -42,7 +42,7 @@ int error_illegal_opt(t_hash *hash_env, char *msg)
 	exit(0);
 }
 
-int error_invalid_file(t_hash *hash_env, char *msg)
+int			error_invalid_file(t_hash *hash_env, char *msg)
 {
 	write(STDERR_FILENO, "ft_ssl: ", 8);
 	write(STDERR_FILENO, hash_env->cmd_name, ft_strlen(hash_env->cmd_name));
@@ -52,7 +52,7 @@ int error_invalid_file(t_hash *hash_env, char *msg)
 	return (0);
 }
 
-void error_panic(void)
+void		error_panic(void)
 {
 	static char	msg[] = "Something went wrong: Clean exit...";
 
@@ -61,24 +61,11 @@ void error_panic(void)
 	exit(0);
 }
 
-int	throw_hash_opt_error(t_hash *hash_env, int err_code)
+int			throw_hash_opt_error(t_hash *hash_env, int err_code)
 {
 	if (err_code == ERR_ILLEGAL_OPT)
 		error_illegal_opt(hash_env, ": illegal option -- ");
 	else if (err_code == ERR_OPT_REQ_ARG)
 		error_illegal_opt(hash_env, ": option requires an argument -- ");
-	return (0);
-}
-
-int	throw_hash_error(t_hash *env, int err_code)
-{
-	if (err_code == ERR_PANIC)
-		error_panic();
-	else if (err_code == ERR_USAGE)
-		write(STDERR_FILENO, g_usage, ft_strlen(g_usage));
-	else if (err_code == ERR_MISSING)
-		error_invalid_file(env, ": No such file or directory\n");
-	else if (err_code == ERR_INVALID_FILE)
-		error_invalid_file(env, ": Invalid file\n");
 	return (0);
 }

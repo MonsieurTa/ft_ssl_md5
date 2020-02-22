@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:12:20 by wta               #+#    #+#             */
-/*   Updated: 2020/02/22 14:46:23 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/22 15:04:53 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ void	digest_files(t_hash *hash_env, char **filepaths, int index_max)
 
 int		digest_string(t_hash *hash_env, char *residual_opt, int index)
 {
+	static char	opt_error_str[] = ": option requires an argument -- ";
+
 	if (*residual_opt == '\0' && index == hash_env->option.opt_count)
-		return (error_illegal_opt(hash_env, ": option requires an argument -- "));
+		return (error_illegal_opt(hash_env, opt_error_str));
 	if (*residual_opt != '\0')
 	{
 		hash_env->input_src = residual_opt;

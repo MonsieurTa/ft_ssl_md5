@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2020/02/22 14:58:49 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/22 15:06:11 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,5 @@ int				error_illegal_opt(t_hash *hash_env, char *msg);
 int				error_invalid_file(t_hash *hash_env, char *msg);
 int				throw_hash_opt_error(t_hash *hash_env, int err_code);
 void			error_panic(void);
-
-
 
 #endif

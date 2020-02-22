@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 17:36:29 by wta               #+#    #+#             */
-/*   Updated: 2020/02/22 14:40:14 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/22 15:04:28 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	cmd_read(t_hash *hash_env, int fd)
 		hash_env->d_buffer.r_buffer[ret] = '\0';
 		if (option_has(&hash_env->option, OPT_PRINT))
 			write(STDOUT_FILENO, hash_env->d_buffer.r_buffer, ret);
-		i = process_buffer(hash_env, &hash_env->d_buffer, hash_env->d_buffer.r_buffer, ret);
+		i = process_buffer(hash_env, &hash_env->d_buffer,
+			hash_env->d_buffer.r_buffer, ret);
 		process_round(hash_env, i, ret, hash_env->d_buffer.r_buffer);
 	}
 	end_digest(hash_env);
