@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:13:52 by wta               #+#    #+#             */
-/*   Updated: 2019/10/26 14:21:06 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/22 14:53:06 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 static char g_opts[] = "pqrs";
 
-static int	apply_option(t_env *env, char c, char *opts)
+static int	apply_option(t_hash *hash_env, char c, char *opts)
 {
 	if (ft_strchr(g_opts, c))
 	{
@@ -29,7 +29,7 @@ static int	apply_option(t_env *env, char c, char *opts)
 		else if (c == 'p')
 		{
 			*opts |= OPT_PRINT;
-			cmd_read(env, STDIN_FILENO);
+			cmd_read(hash_env, STDIN_FILENO);
 		}
 		else if (c == 's')
 			*opts |= OPT_STRING;
@@ -38,7 +38,7 @@ static int	apply_option(t_env *env, char c, char *opts)
 	return (-1);
 }
 
-static int	parse_option(t_env *env, int idx)
+static int	parse_option(t_hash *hash_env, int idx)
 {
 	t_option	*opt;
 	char		c;
@@ -47,7 +47,7 @@ static int	parse_option(t_env *env, int idx)
 	int			len;
 
 	i = 0;
-	opt = &env->option;
+	opt = &hash_env->option;
 	len = ft_strlen(opt->opt_list[idx]);
 	if (opt->opt_list[idx][i++] != '-' || len == 1)
 		return (0);
@@ -55,24 +55,24 @@ static int	parse_option(t_env *env, int idx)
 	while ((c = opt->opt_list[idx][i]) != '\0' && ret)
 	{
 		opt->curr_opt = c;
-		if ((ret = apply_option(env, c, &opt->opts)) == -1)
-			throw_error(env, ERR_ILLEGAL_OPT);
+		if ((ret = apply_option(hash_env, c, &opt->opts)) == -1)
+			throw_hash_opt_error(hash_env, ERR_ILLEGAL_OPT);
 		if (option_has(opt, OPT_STRING))
-			return (digest_string(env, &opt->opt_list[idx][i + 1], idx + 1));
+			return (digest_string(hash_env, &opt->opt_list[idx][i + 1], idx + 1));
 		i++;
 	}
 	return (1);
 }
 
-int			manage_options(t_env *env)
+int			manage_options(t_hash *hash_env)
 {
 	int i;
 
 	i = 0;
-	while (i < env->option.opt_count && parse_option(env, i))
+	while (i < hash_env->option.opt_count && parse_option(hash_env, i))
 		i++;
-	if (i < env->option.opt_count)
-		return (2 + i + option_has(&env->option, OPT_STRING));
+	if (i < hash_env->option.opt_count)
+		return (2 + i + option_has(&hash_env->option, OPT_STRING));
 	return (-1);
 }
 

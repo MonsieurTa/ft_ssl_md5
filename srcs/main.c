@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2019/12/20 17:16:00 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/22 14:59:01 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "sha.h"
 #include "option.h"
 
-static int	(*g_cmds[])(t_env *, char *) = {
+static int	(*g_hash_cmds[])(t_hash *, char *) = {
 	set_md5,
 	set_sha1,
 	set_sha224,
@@ -24,52 +24,56 @@ static int	(*g_cmds[])(t_env *, char *) = {
 	NULL
 };
 
-static void	process_cli(t_env *env, int ac, char **av)
+static void	process_cli(t_hash *hash_env, int argc, char **argv)
 {
 	int	files_index;
 
-	if (ac > 2)
+	if (argc > 2)
 	{
-		env->option.opt_count = ac - 2;
-		env->option.opt_list = &av[2];
-		files_index = manage_options(env);
-		env->option.opts ^= (env->option.opts & OPT_STRING);
+		hash_env->option.opt_count = argc - 2;
+		hash_env->option.opt_list = &argv[2];
+		files_index = manage_options(hash_env);
+		hash_env->option.opts ^= (hash_env->option.opts & OPT_STRING);
 		if (files_index != -1)
-			digest_files(env, &av[files_index], ac - files_index);
-		else if (option_has(&env->option, OPT_REVERSE)
-		|| option_has(&env->option, OPT_QUIET))
-			cmd_read(env, STDIN_FILENO);
+			digest_files(hash_env, &argv[files_index], argc - files_index);
+		else if (option_has(&hash_env->option, OPT_REVERSE)
+		|| option_has(&hash_env->option, OPT_QUIET))
+			cmd_read(hash_env, STDIN_FILENO);
 	}
-	else if (ac == 2)
-		cmd_read(env, STDIN_FILENO);
+	else if (argc == 2)
+		cmd_read(hash_env, STDIN_FILENO);
 }
 
-int			get_cmd(t_env *env, char *name)
+int			get_hash_cmd(t_env *env, int argc, char *argv[])
 {
+	t_hash	*hash_env;
 	size_t	i;
 
+	hash_env = &env->hash_env;
 	i = 0;
-	ft_memcpy(env->cmd_name, name, min(MAX_CMD_SIZE, ft_strlen(name)));
-	while (g_cmds[i] && g_cmds[i](env, name) == 0)
+	ft_memcpy(env->cmd_name, argv[1], min(MAX_CMD_SIZE, ft_strlen(argv[1])));
+	while (g_hash_cmds[i] && g_hash_cmds[i](hash_env, argv[1]) == 0)
 		i++;
-	if (!g_cmds[i])
-		return (throw_error(env, ERR_BAD_CMD));
+	if (!g_hash_cmds[i])
+		return (0);
+	hash_env->cmd_name = env->cmd_name;
+	process_cli(hash_env, argc, argv);
 	return (1);
 }
 
-int			main(int ac, char **av)
+int			main(int argc, char *argv[])
 {
 	t_env	env;
 
 	ft_bzero(&env, sizeof(t_env));
-	if (ac > 1)
+	if (argc > 1)
 	{
-		if (get_cmd(&env, av[1]))
-			process_cli(&env, ac, av);
+		if (!get_hash_cmd(&env, argc, argv))
+			error_bad_cmd(&env);
 	}
 	else
 	{
 		while (1)
-			ft_ssl_read(&env);
+			ft_ssl_read(&env, argc);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 19:46:49 by wta               #+#    #+#             */
-/*   Updated: 2019/12/20 17:15:04 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/22 14:36:05 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,21 @@ void			assign_data_to_words(uint32_t words[64], uint32_t *chunk)
 	}
 }
 
-void			sha256_init(t_env *env)
+void			sha256_init(t_hash *hash_env)
 {
-	env->result[0] = 0x6a09e667;
-	env->result[1] = 0xbb67ae85;
-	env->result[2] = 0x3c6ef372;
-	env->result[3] = 0xa54ff53a;
-	env->result[4] = 0x510e527f;
-	env->result[5] = 0x9b05688c;
-	env->result[6] = 0x1f83d9ab;
-	env->result[7] = 0x5be0cd19;
-	env->output_size = FT_SSL_64_OUTPUT;
-	env->big_endian = 1;
+	hash_env->result[0] = 0x6a09e667;
+	hash_env->result[1] = 0xbb67ae85;
+	hash_env->result[2] = 0x3c6ef372;
+	hash_env->result[3] = 0xa54ff53a;
+	hash_env->result[4] = 0x510e527f;
+	hash_env->result[5] = 0x9b05688c;
+	hash_env->result[6] = 0x1f83d9ab;
+	hash_env->result[7] = 0x5be0cd19;
+	hash_env->output_size = FT_SSL_64_OUTPUT;
+	hash_env->big_endian = 1;
 }
 
-void			sha256(t_env *env, uint32_t *chunk)
+void			sha256(t_hash *hash_env, uint32_t *chunk)
 {
 	uint32_t	words[64];
 	uint32_t	w[8];
@@ -94,7 +94,7 @@ void			sha256(t_env *env, uint32_t *chunk)
 	int			i;
 
 	i = -1;
-	ft_memcpy(w, env->result, sizeof(uint32_t) * 8);
+	ft_memcpy(w, hash_env->result, sizeof(uint32_t) * 8);
 	assign_data_to_words(words, chunk);
 	extend_words(words);
 	while (++i < CHUNK_SIZE)
@@ -106,5 +106,5 @@ void			sha256(t_env *env, uint32_t *chunk)
 	}
 	i = -1;
 	while (++i < 8)
-		env->result[i] += w[i];
+		hash_env->result[i] += w[i];
 }

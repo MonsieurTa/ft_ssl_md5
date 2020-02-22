@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:07:18 by wta               #+#    #+#             */
-/*   Updated: 2019/12/20 17:07:42 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/22 14:33:37 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,23 @@ uint8_t		g_md5_g[] = {
 	0, 7, 14, 5, 12, 3, 10, 1, 8, 15, 6, 13, 4, 11, 2, 9
 };
 
-void		md5_init(t_env *env)
+void		md5_init(t_hash *hash_env)
 {
-	env->result[0] = 0x67452301;
-	env->result[1] = 0xefcdab89;
-	env->result[2] = 0x98badcfe;
-	env->result[3] = 0x10325476;
-	env->output_size = FT_SSL_32_OUTPUT;
+	hash_env->result[0] = 0x67452301;
+	hash_env->result[1] = 0xefcdab89;
+	hash_env->result[2] = 0x98badcfe;
+	hash_env->result[3] = 0x10325476;
+	hash_env->output_size = FT_SSL_32_OUTPUT;
 }
 
-static void	md5(t_env *env, uint32_t *chunk)
+static void	md5(t_hash *hash_env, uint32_t *chunk)
 {
 	uint32_t	digest[4];
 	uint32_t	f;
 	int			i;
 
 	i = -1;
-	ft_memcpy(digest, env->result, sizeof(uint32_t) * 4);
+	ft_memcpy(digest, hash_env->result, sizeof(uint32_t) * 4);
 	while (++i < CHUNK_SIZE)
 	{
 		if (i < 16)
@@ -86,14 +86,14 @@ static void	md5(t_env *env, uint32_t *chunk)
 	}
 	i = -1;
 	while (++i < 4)
-		env->result[i] += digest[i];
+		hash_env->result[i] += digest[i];
 }
 
-int			set_md5(t_env *env, char *name)
+int			set_md5(t_hash *hash_env, char *name)
 {
 	if (!ft_strequ(name, "md5"))
 		return (0);
-	env->cmd = md5;
-	env->init_cmd = md5_init;
+	hash_env->cmd = md5;
+	hash_env->init_cmd = md5_init;
 	return (1);
 }

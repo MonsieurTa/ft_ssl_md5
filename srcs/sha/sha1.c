@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 15:23:15 by wta               #+#    #+#             */
-/*   Updated: 2019/12/20 17:08:40 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/22 14:35:40 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,15 @@ static void		extend_words(uint32_t w[])
 		w[i] = lr((w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16]), 1);
 }
 
-void			sha1_init(t_env *env)
+void			sha1_init(t_hash *hash_env)
 {
-	md5_init(env);
-	env->result[4] = 0xC3D2E1F0;
-	env->output_size = FT_SSL_40_OUTPUT;
-	env->big_endian = 1;
+	md5_init(hash_env);
+	hash_env->result[4] = 0xC3D2E1F0;
+	hash_env->output_size = FT_SSL_40_OUTPUT;
+	hash_env->big_endian = 1;
 }
 
-void			sha1(t_env *env, uint32_t *chunk)
+void			sha1(t_hash *hash_env, uint32_t *chunk)
 {
 	uint32_t	w[80];
 	uint32_t	digest[5];
@@ -60,7 +60,7 @@ void			sha1(t_env *env, uint32_t *chunk)
 	int			i;
 
 	i = 15;
-	ft_memcpy(digest, env->result, sizeof(uint32_t) * 5);
+	ft_memcpy(digest, hash_env->result, sizeof(uint32_t) * 5);
 	assign_data_to_words(w, chunk);
 	extend_words(w);
 	i = -1;
@@ -76,5 +76,5 @@ void			sha1(t_env *env, uint32_t *chunk)
 	}
 	i = -1;
 	while (++i < 5)
-		env->result[i] += digest[i];
+		hash_env->result[i] += digest[i];
 }

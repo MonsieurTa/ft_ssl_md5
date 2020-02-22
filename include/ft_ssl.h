@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2019/12/20 17:17:22 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/22 14:58:49 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,37 +45,45 @@ typedef struct	s_digest_buffer
 	uint32_t	len;
 }				t_digest_buffer;
 
-typedef struct	s_env
+typedef struct	s_hash
 {
-	char			cmd_name[MAX_CMD_SIZE + 1];
-	t_option		option;
+	char			*cmd_name;
 	char			*input_src;
+	t_option		option;
 	uint64_t		data_len;
 	t_digest_buffer	d_buffer;
 	uint32_t		result[8];
 	char			output[OUTPUT_SIZE + 1];
 	uint8_t			output_size;
 	char			big_endian;
-	void			(*cmd)(struct s_env *, uint32_t *);
-	void			(*init_cmd)(struct s_env *);
+	void			(*cmd)(struct s_hash *, uint32_t *);
+	void			(*init_cmd)(struct s_hash *);
+}				t_hash;
+
+typedef struct	s_env
+{
+	char			cmd_name[MAX_CMD_SIZE + 1];
+	char			*input_src;
+	t_hash			hash_env;
 }				t_env;
 
-void			ft_ssl_get_result(t_env *env);
-int				ft_ssl_read(t_env *env);
-int				get_cmd(t_env *env, char *name);
-void			cmd_read(t_env *env, int fd);
-void			ft_ssl_string(t_env *env, char *str);
-void			digest_files(t_env *env, char **filepaths, int index_max);
-int				digest_string(t_env *env, char *residual_opt, int index);
-void			end_digest(t_env *env);
-size_t			process_buffer(t_env *env, t_digest_buffer *d_buffer,
+int				get_hash_cmd(t_env *env, int argc, char *argv[]);
+
+void			ft_ssl_get_result(t_hash *hash_env);
+int				ft_ssl_read(t_env *env, int argc);
+void			cmd_read(t_hash *hash_env, int fd);
+void			ft_ssl_string(t_hash *hash_env, char *str);
+void			digest_files(t_hash *hash_env, char **filepaths, int index_max);
+int				digest_string(t_hash *hash_env, char *residual_opt, int index);
+void			end_digest(t_hash *hash_env);
+size_t			process_buffer(t_hash *hash_env, t_digest_buffer *d_buffer,
 								uint8_t *r_buffer, size_t size);
-void			process_round(t_env *env, size_t start,
+void			process_round(t_hash *hash_env, size_t start,
 						size_t end, uint8_t *data);
 void			fill_buffer(t_digest_buffer *d_buffer,
 						uint8_t *r_buffer, size_t size);
 
-void			format_output(t_env *env);
+void			format_output(t_hash *hash_env);
 
 void			print_bit(char c, int len);
 uint64_t		align_up(int n, uint64_t mod);
@@ -87,6 +95,12 @@ void			byte_swap32_buffer(uint32_t *buffer, size_t size);
 void			print_to_upper(char *str);
 int				strings_array_len(char **array);
 
-int				throw_error(t_env *env, int err_code);
+int				error_bad_cmd(t_env *env);
+int				error_illegal_opt(t_hash *hash_env, char *msg);
+int				error_invalid_file(t_hash *hash_env, char *msg);
+int				throw_hash_opt_error(t_hash *hash_env, int err_code);
+void			error_panic(void);
+
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/09 12:54:27 by wta               #+#    #+#             */
-/*   Updated: 2019/12/20 16:57:33 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/22 14:34:55 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ extern uint8_t	g_md5_g[];
 extern uint8_t	g_left_shifts[];
 extern uint32_t	g_constants[];
 
-void			ft_ssl_get_result(t_env *env);
-void			md5_init(t_env *env);
-int				set_md5(t_env *env, char *name);
+void			md5_init(t_hash *hash_env);
+int				set_md5(t_hash *hash_env, char *name);
 
 #endif
