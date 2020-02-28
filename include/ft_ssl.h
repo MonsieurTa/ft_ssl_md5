@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2020/02/28 09:48:31 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/28 09:53:20 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@
 # define SSL_FN							"../utils/ssl_fn.c"
 
 # define READ_BUFFER_LEN		4096
-# define MAX_CMD_SIZE				64
-# define CHUNK_SIZE					64
-# define OUTPUT_SIZE				256
+# define MAX_CMD_SIZE			64
+# define CHUNK_SIZE				64
+# define OUTPUT_SIZE			256
 
-# define ERRNOERROR					0x1
-# define ERR_BAD_CMD				0x2
-# define ERR_USAGE					0x4
+# define ERRNOERROR				0x1
+# define ERR_BAD_CMD			0x2
+# define ERR_USAGE				0x4
 # define ERR_ILLEGAL_OPT		0x8
-# define ERR_MISSING				0x10
+# define ERR_MISSING			0x10
 # define ERR_INVALID_FILE		0x20
-# define ERR_PANIC					0x40
+# define ERR_PANIC				0x40
 # define ERR_OPT_REQ_ARG		0x80
 
 # define FT_SSL_64_OUTPUT		64
