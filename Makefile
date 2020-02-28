@@ -6,12 +6,12 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/10/26 16:24:49 by wta              ###   ########.fr        #
+#    Updated: 2020/02/28 09:25:12 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ssl
-CFLAGS = -Wall -Wextra -Werror# -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 CC = cc -O2
 
 INC_DIR = include
@@ -26,6 +26,7 @@ option.h		\
 sha.h
 
 SRCS =				\
+des/setters.c		\
 md5/md5.c			\
 sha/setters.c		\
 sha/sha1.c			\
@@ -54,6 +55,7 @@ $(NAME): $(addprefix $(OBJ_DIR)/, $(OBJ))
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)/des
 	mkdir -p $(OBJ_DIR)/md5
 	mkdir -p $(OBJ_DIR)/sha
 	mkdir -p $(OBJ_DIR)/utils

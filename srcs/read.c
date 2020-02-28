@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 10:22:18 by wta               #+#    #+#             */
-/*   Updated: 2020/02/22 15:08:35 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/28 09:48:19 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ void		ft_ssl_get_result(t_hash *hash_env)
 	format_output(hash_env);
 }
 
-static void	process_read(t_env *env, int argc, char **args)
+static void	process_read(t_env *env, char **args)
 {
 	t_hash	*hash_env;
 	int		ac;
 
 	ac = strings_array_len(args);
-	if (ac && get_hash_cmd(env, argc, args))
+	if (ac && get_cmd(env, args[0], get_hash_cmd))
 	{
 		hash_env = &env->hash_env;
 		if (ac > 1)
@@ -65,7 +65,7 @@ static void	process_read(t_env *env, int argc, char **args)
 	del_tab(args, ac);
 }
 
-int			ft_ssl_read(t_env *env, int argc)
+int			ft_ssl_read(t_env *env)
 {
 	char	**args;
 	char	*line;
@@ -78,7 +78,7 @@ int			ft_ssl_read(t_env *env, int argc)
 	else if (gnl_ret == 0)
 		exit(0);
 	if ((args = ft_strsplit(line, ' ')) != NULL)
-		process_read(env, argc, args);
+		process_read(env, args);
 	ft_strdel(&line);
 	return (1);
 }

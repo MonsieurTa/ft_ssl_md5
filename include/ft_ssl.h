@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2020/02/22 15:06:11 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/28 09:48:31 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,27 @@ typedef struct	s_hash
 	void			(*init_cmd)(struct s_hash *);
 }				t_hash;
 
+typedef struct	s_des
+{
+	char			*cmd_name;
+	char			*input_src;
+}				t_des;
+
 typedef struct	s_env
 {
+	int				argc;
+	char			**argv;
 	char			cmd_name[MAX_CMD_SIZE + 1];
 	char			*input_src;
 	t_hash			hash_env;
+	t_des			des_env;
 }				t_env;
 
-int				get_hash_cmd(t_env *env, int argc, char *argv[]);
-
+int				get_hash_cmd(t_env *env);
+int				get_des_cmd(t_env *env);
+int				get_cmd(t_env *env, char *cmd_name, int (*getter)(t_env*));
 void			ft_ssl_get_result(t_hash *hash_env);
-int				ft_ssl_read(t_env *env, int argc);
+int				ft_ssl_read(t_env *env);
 void			cmd_read(t_hash *hash_env, int fd);
 void			ft_ssl_string(t_hash *hash_env, char *str);
 void			digest_files(t_hash *hash_env, char **filepaths, int index_max);
