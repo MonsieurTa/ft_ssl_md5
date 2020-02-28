@@ -6,16 +6,19 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2020/02/28 09:48:25 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/28 18:33:12 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_getopt.h"
 #include "ft_ssl.h"
 #include "md5.h"
 #include "sha.h"
 #include "option.h"
 #include "des.h"
+
+#include "ft_printf.h"
 
 static int	(*g_hash_cmds[])(t_hash *, char *) = {
 	set_md5,
@@ -66,8 +69,45 @@ int			get_hash_cmd(t_env *env)
 	return (1);
 }
 
+int			des_getopt(t_des *des_env, int argc, char **argv)
+{
+	char	c;
+
+	while ((c = ft_getopt(argc - 1, argv + 1, "adei:k:o:p:s:v:")) != -1)
+	{
+		if (c == 'a')
+			des_env->opt |= BASE64_OPT;
+		else if (c == 'd')
+			des_env->opt |= ENCRYPT_OPT;
+		else if (c == 'e')
+			des_env->opt |= DECRYPT_OPT;
+		else if (c == 'i')
+			des_env->input = g_optarg;
+		else if (c == 'k')
+			des_env->opt |= KEY_OPT;
+		else if (c == 'o')
+			des_env->output = g_optarg;
+		else if (c == 'p')
+			des_env->opt |= PASSWORD_OPT;
+		else if (c == 's')
+			des_env->opt |= SALT_OPT;
+		else if (c == 'v')
+			des_env->opt |= INIT_VECTOR_OPT;
+		else
+			return (0);
+	}
+	return (1);
+}
+
 int			get_des_cmd(t_env *env)
 {
+	char	salt[] = {
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0,
+	};
 	t_des	*des_env;
 	size_t	i;
 
@@ -78,6 +118,10 @@ int			get_des_cmd(t_env *env)
 	if (!g_des_cmds[i])
 		return (0);
 	des_env->cmd_name = env->cmd_name;
+	// if (!des_getopt(des_env, env->argc, env->argv))
+	// 	return (-1);
+	t_hash test = prf(env->argv[2], salt);
+	format_output(&test);
 	return (1);
 }
 
@@ -90,14 +134,17 @@ int			get_cmd(t_env *env, char *cmd_name, int (*getter)(t_env*))
 int			main(int argc, char *argv[])
 {
 	t_env	env;
+	int		ret;
 
 	ft_bzero(&env, sizeof(t_env));
 	env.argc = argc;
 	env.argv = argv;
 	if (argc > 1)
 	{
-		if (!get_cmd(&env, argv[1], get_hash_cmd)
-		&& !get_cmd(&env, argv[1], get_des_cmd))
+		ret = get_cmd(&env, argv[1], get_hash_cmd);
+		if (ret == 0)
+			ret = get_cmd(&env, argv[1], get_des_cmd);
+		if (ret == 0)
 			error_bad_cmd(&env);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 10:22:18 by wta               #+#    #+#             */
-/*   Updated: 2020/02/28 09:48:19 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/28 17:43:20 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void		ft_ssl_get_result(t_hash *hash_env)
 		byte_to_hexa(&hash_env->output[i], ptr[i / 2]);
 		i += 2;
 	}
-	format_output(hash_env);
 }
 
 static void	process_read(t_env *env, char **args)
