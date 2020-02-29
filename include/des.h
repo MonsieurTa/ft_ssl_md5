@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 13:23:21 by wta               #+#    #+#             */
-/*   Updated: 2020/02/28 18:32:55 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/29 15:05:29 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,18 @@
 # define INIT_VECTOR_OPT	0x80
 
 # define SALT_SIZE			20
+
+typedef struct	s_des
+{
+	char			*cmd_name;
+	char			*input;
+	char			*output;
+
+	char			*key;
+	char			salt[SALT_SIZE];
+
+	char			opt;
+}				t_des;
 
 int		set_des_cbc(t_des *des_env, char *name);
 t_hash	prf(char *key, char salt[SALT_SIZE]);

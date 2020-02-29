@@ -6,14 +6,14 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2020/02/28 12:06:39 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/29 15:05:42 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_SSL_H
 # define FT_SSL_H
 
-# define SSL_FN							"../utils/ssl_fn.c"
+# define SSL_FN					"../utils/ssl_fn.c"
 
 # define READ_BUFFER_LEN		4096
 # define MAX_CMD_SIZE			64
@@ -37,6 +37,7 @@
 # include <stdint.h>
 # include <string.h>
 # include "option.h"
+# include "des.h"
 
 typedef struct	s_digest_buffer
 {
@@ -59,14 +60,6 @@ typedef struct	s_hash
 	void			(*cmd)(struct s_hash *, uint32_t *);
 	void			(*init_cmd)(struct s_hash *);
 }				t_hash;
-
-typedef struct	s_des
-{
-	char			*cmd_name;
-	char			*input;
-	char			*output;
-	char			opt;
-}				t_des;
 
 typedef struct	s_env
 {
