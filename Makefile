@@ -6,7 +6,7 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2020/02/28 18:10:21 by wta              ###   ########.fr        #
+#    Updated: 2020/02/29 14:39:43 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ option.h		\
 sha.h
 
 SRCS =				\
-des/pbkdf2.c		\
+des/prf.c			\
 des/setters.c		\
 md5/md5.c			\
 sha/setters.c		\
