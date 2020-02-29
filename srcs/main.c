@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2020/02/28 18:33:12 by wta              ###   ########.fr       */
+/*   Updated: 2020/02/29 16:58:24 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,10 @@ int			des_getopt(t_des *des_env, int argc, char **argv)
 int			get_des_cmd(t_env *env)
 {
 	char	salt[] = {
-		0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0,
+		0, 0, 0, 0,
+		0, 0, 0, 0,
+		0, 0, 0, 0,
+		0, 0, 0, 0,
 	};
 	t_des	*des_env;
 	size_t	i;
@@ -118,10 +117,11 @@ int			get_des_cmd(t_env *env)
 	if (!g_des_cmds[i])
 		return (0);
 	des_env->cmd_name = env->cmd_name;
-	// if (!des_getopt(des_env, env->argc, env->argv))
-	// 	return (-1);
-	t_hash test = prf(env->argv[2], salt);
-	format_output(&test);
+	if (!des_getopt(des_env, env->argc, env->argv))
+		return (-1);
+	des_env->key = (uint8_t*)env->argv[g_optind + 1];
+	ft_memcpy(des_env->salt, salt, SALT_SIZE);
+	pbkdf2(des_env);
 	return (1);
 }
 
