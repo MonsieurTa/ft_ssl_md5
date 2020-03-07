@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2020/02/29 16:58:24 by wta              ###   ########.fr       */
+/*   Updated: 2020/03/07 17:17:45 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,8 @@ int			des_getopt(t_des *des_env, int argc, char **argv)
 int			get_des_cmd(t_env *env)
 {
 	char	salt[] = {
-		0, 0, 0, 0,
-		0, 0, 0, 0,
-		0, 0, 0, 0,
+		0x73, 0x61, 0x6c, 0x74,
+		// 0x4a, 0x65, 0x66, 0x65,
 		0, 0, 0, 0,
 	};
 	t_des	*des_env;
@@ -119,8 +118,9 @@ int			get_des_cmd(t_env *env)
 	des_env->cmd_name = env->cmd_name;
 	if (!des_getopt(des_env, env->argc, env->argv))
 		return (-1);
-	des_env->key = (uint8_t*)env->argv[g_optind + 1];
-	ft_memcpy(des_env->salt, salt, SALT_SIZE);
+	des_env->key = env->argv[g_optind + 1];
+	des_env->saltsz = ft_strlen(salt);
+	ft_memcpy(des_env->salt, salt, des_env->saltsz);
 	pbkdf2(des_env);
 	return (1);
 }

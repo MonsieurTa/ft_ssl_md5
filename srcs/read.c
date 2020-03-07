@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 10:22:18 by wta               #+#    #+#             */
-/*   Updated: 2020/02/28 17:43:20 by wta              ###   ########.fr       */
+/*   Updated: 2020/03/07 15:36:24 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 #include "ft_ssl.h"
 #include "md5.h"
 
-void		ft_ssl_string(t_hash *hash_env, char *str)
+void		ft_ssl_string(t_hash *hash_env, char *str, uint32_t len)
 {
 	size_t	i;
 
 	hash_env->init_cmd(hash_env);
-	hash_env->data_len = ft_strlen(str);
+	hash_env->data_len = len;
 	ft_bzero(&hash_env->d_buffer, sizeof(t_digest_buffer));
 	i = process_buffer(hash_env, &hash_env->d_buffer,
 		(uint8_t*)str, hash_env->data_len);

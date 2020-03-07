@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:31:34 by wta               #+#    #+#             */
-/*   Updated: 2020/02/29 15:05:42 by wta              ###   ########.fr       */
+/*   Updated: 2020/03/07 14:59:08 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int				get_cmd(t_env *env, char *cmd_name, int (*getter)(t_env*));
 void			ft_ssl_get_result(t_hash *hash_env);
 int				ft_ssl_read(t_env *env);
 void			cmd_read(t_hash *hash_env, int fd);
-void			ft_ssl_string(t_hash *hash_env, char *str);
+void			ft_ssl_string(t_hash *hash_env, char *str, uint32_t len);
 void			digest_files(t_hash *hash_env, char **filepaths, int index_max);
 int				digest_string(t_hash *hash_env, char *residual_opt, int index);
 void			end_digest(t_hash *hash_env);
