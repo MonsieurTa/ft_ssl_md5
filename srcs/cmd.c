@@ -34,4 +34,5 @@ void	cmd_read(t_hash *hash_env, int fd)
 	}
 	end_digest(hash_env);
 	ft_ssl_get_result(hash_env);
+	format_output(hash_env);
 }
