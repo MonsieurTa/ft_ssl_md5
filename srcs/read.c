@@ -60,7 +60,8 @@ static void	process_read(t_env *env, char **args)
 			digest_files(hash_env, args + 1, ac - 1);
 		else
 			cmd_read(hash_env, STDIN_FILENO);
-	}
+	} else
+		error_bad_cmd(env);
 	del_tab(args, ac);
 }
 
