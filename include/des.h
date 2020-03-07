@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 13:23:21 by wta               #+#    #+#             */
-/*   Updated: 2020/03/07 18:13:30 by wta              ###   ########.fr       */
+/*   Updated: 2020/03/07 18:15:31 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 # define HASH_OUTPUT_SIZE	20
 # define SALT_SIZE			8
-# define ITERATION			4096
+# define ITERATION			2048
 
 # define DK_SIZE			16
 
