@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 16:02:10 by wta               #+#    #+#             */
-/*   Updated: 2020/03/07 17:17:45 by wta              ###   ########.fr       */
+/*   Updated: 2020/03/08 19:58:44 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ int			des_getopt(t_des *des_env, int argc, char **argv)
 		else if (c == 'i')
 			des_env->input = g_optarg;
 		else if (c == 'k')
-			des_env->opt |= KEY_OPT;
+			des_env->key = g_optarg;
 		else if (c == 'o')
 			des_env->output = g_optarg;
 		else if (c == 'p')
 			des_env->opt |= PASSWORD_OPT;
 		else if (c == 's')
-			des_env->opt |= SALT_OPT;
+			des_env->salt_arg = g_optarg;
 		else if (c == 'v')
 			des_env->opt |= INIT_VECTOR_OPT;
 		else
@@ -99,13 +99,60 @@ int			des_getopt(t_des *des_env, int argc, char **argv)
 	return (1);
 }
 
+void	to_upper_case(char *str)
+{
+	uint32_t	len;
+	uint32_t	i;
+
+	len = ft_strlen(str);
+	i = 0;
+	while (i < len)
+	{
+		if (str[i] >= 'a' && str[i] <= 'z')
+			str[i] -= 32;
+		i++;
+	}
+}
+
+uint8_t	char_to_byte(char c)
+{
+	if (c >= '0' && c <= '9')
+		return (c - '0');
+	if (c >= 'A' && c <= 'Z')
+		return (c - 'A' + 10);
+	return (0);
+}
+
+uint8_t	strbyte_to_byte(char *byte)
+{
+	return (char_to_byte(byte[0]) << 4 | char_to_byte(byte[1]));
+}
+
+void	str_to_bytes(uint8_t dst[], char *src)
+{
+	uint32_t	len;
+	uint32_t	i;
+
+	len = min((ft_strlen(src) + 2 - 1) / 2, SALT_SIZE);
+	i = 0;
+	while (i < len)
+	{
+		dst[i] = strbyte_to_byte(src + i * 2);
+		i++;
+	}
+}
+
+void		format_salt(t_des *des_env)
+{
+	if (des_env->salt_arg)
+	{
+		to_upper_case(des_env->salt_arg);
+		str_to_bytes(des_env->salt, des_env->salt_arg);
+	}
+}
+
 int			get_des_cmd(t_env *env)
 {
-	char	salt[] = {
-		0x73, 0x61, 0x6c, 0x74,
-		// 0x4a, 0x65, 0x66, 0x65,
-		0, 0, 0, 0,
-	};
 	t_des	*des_env;
 	size_t	i;
 
@@ -118,10 +165,8 @@ int			get_des_cmd(t_env *env)
 	des_env->cmd_name = env->cmd_name;
 	if (!des_getopt(des_env, env->argc, env->argv))
 		return (-1);
-	des_env->key = env->argv[g_optind + 1];
-	des_env->saltsz = ft_strlen(salt);
-	ft_memcpy(des_env->salt, salt, des_env->saltsz);
-	pbkdf2(des_env);
+	format_salt(des_env);
+	pbkdf1(des_env);
 	return (1);
 }
 

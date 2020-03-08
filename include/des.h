@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 13:23:21 by wta               #+#    #+#             */
-/*   Updated: 2020/03/07 18:15:31 by wta              ###   ########.fr       */
+/*   Updated: 2020/03/08 19:21:42 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define SALT_SIZE			8
 # define ITERATION			2048
 
-# define DK_SIZE			16
+# define DK_SIZE			8
 
 # define L					(DK_SIZE + HASH_OUTPUT_SIZE - 1) / HASH_OUTPUT_SIZE
 # define R					DK_SIZE - (l - 1) * HASH_OUTPUT_SIZE
@@ -37,6 +37,7 @@ typedef struct	s_des
 	char			*output;
 
 	char			*key;
+	char			*salt_arg;
 	uint8_t			salt[SALT_SIZE];
 	uint32_t		saltsz;
 
@@ -47,6 +48,7 @@ void	str_xor_str_to_buffer(uint8_t *dst, uint8_t *a, uint8_t *b, uint32_t size);
 
 int		set_des_cbc(t_des *des_env, char *name);
 t_hash	prf(char *key, uint8_t salt[HASH_OUTPUT_SIZE], uint32_t saltsz);
+int		pbkdf1(t_des *des_env);
 int		pbkdf2(t_des *des_env);
 
 #endif
