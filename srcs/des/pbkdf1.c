@@ -17,6 +17,9 @@
 #include "des.h"
 #include "ft_printf.h"
 
+// hash_env.result =
+//     DK       IV
+// [________|________] len = 16 + 1('\0');
 int		pbkdf1(t_des *des_env)
 {
 	uint8_t		out[DK_SIZE * 2 + 1];
