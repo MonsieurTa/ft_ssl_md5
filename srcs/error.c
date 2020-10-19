@@ -28,7 +28,7 @@ int			error_bad_cmd(t_env *env)
 	"sha1\n"
 	"sha224\n"
 	"sha256\n\n", 49);
-	return (0);
+	return (-1);
 }
 
 int			error_illegal_opt(t_hash *hash_env, char *msg)
