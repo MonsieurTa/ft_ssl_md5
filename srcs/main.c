@@ -178,27 +178,27 @@ int			get_cmd(t_env *env, char *cmd_name, int (*getter)(t_env*))
 
 int			main(int argc, char *argv[])
 {
-  int (*getters[2])(t_env*) = {
-    get_hash_cmd,
-    get_des_cmd,
-  };
-  const size_t getters_len = 2;
-	t_env	  env;
-  size_t  i;
+	int (*getters[2])(t_env*) = {
+		get_hash_cmd,
+		get_des_cmd,
+	};
+	const size_t getters_len = 2;
+	t_env		env;
+	size_t	i;
 
 	ft_bzero(&env, sizeof(t_env));
 	env.argc = argc;
 	env.argv = argv;
 	if (argc > 1)
 	{
-    i = 0;
-    while (i < getters_len && !get_cmd(&env, argv[1], getters[i]))
-      i++;
-    if (i == getters_len)
-      return (error_bad_cmd(&env));
-    return (0);
+		i = 0;
+		while (i < getters_len && !get_cmd(&env, argv[1], getters[i]))
+			i++;
+		if (i == getters_len)
+			return (error_bad_cmd(&env));
+		return (0);
 	}
-  while (1)
-    ft_ssl_read(&env);
-  return (0);
+	while (1)
+		ft_ssl_read(&env);
+	return (0);
 }
